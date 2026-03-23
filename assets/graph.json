@@ -1,0 +1,1770 @@
+{
+  "nodes": [
+    {
+      "id": 0,
+      "op": "Conv",
+      "inputs": ["input", "features.0.0.weight", "features.0.0.weight_bias"],
+      "outputs": ["getitem"],
+      "attrs": {"dilations": [1, 1], "group": [1], "pads": [1, 1, 1, 1], "strides": [2, 2]}
+    },
+    {
+      "id": 1,
+      "op": "Clip",
+      "inputs": ["getitem", "min_val_cast", "max_val_cast"],
+      "outputs": ["hardtanh"],
+      "attrs": {}
+    },
+    {
+      "id": 2,
+      "op": "Conv",
+      "inputs": ["hardtanh", "features.1.conv.0.0.weight", "features.1.conv.0.0.weight_bias"],
+      "outputs": ["getitem_3"],
+      "attrs": {"dilations": [1, 1], "group": [32], "pads": [1, 1, 1, 1], "strides": [1, 1]}
+    },
+    {
+      "id": 3,
+      "op": "Clip",
+      "inputs": ["getitem_3", "min_val_cast", "max_val_cast"],
+      "outputs": ["hardtanh_1"],
+      "attrs": {}
+    },
+    {
+      "id": 4,
+      "op": "Conv",
+      "inputs": ["hardtanh_1", "features.1.conv.1.weight", "features.1.conv.1.weight_bias"],
+      "outputs": ["getitem_6"],
+      "attrs": {"dilations": [1, 1], "group": [1], "pads": [0, 0, 0, 0], "strides": [1, 1]}
+    },
+    {
+      "id": 5,
+      "op": "Conv",
+      "inputs": ["getitem_6", "features.2.conv.0.0.weight", "features.2.conv.0.0.weight_bias"],
+      "outputs": ["getitem_9"],
+      "attrs": {"dilations": [1, 1], "group": [1], "pads": [0, 0, 0, 0], "strides": [1, 1]}
+    },
+    {
+      "id": 6,
+      "op": "Clip",
+      "inputs": ["getitem_9", "min_val_cast", "max_val_cast"],
+      "outputs": ["hardtanh_2"],
+      "attrs": {}
+    },
+    {
+      "id": 7,
+      "op": "Conv",
+      "inputs": ["hardtanh_2", "features.2.conv.1.0.weight", "features.2.conv.1.0.weight_bias"],
+      "outputs": ["getitem_12"],
+      "attrs": {"dilations": [1, 1], "group": [96], "pads": [1, 1, 1, 1], "strides": [2, 2]}
+    },
+    {
+      "id": 8,
+      "op": "Clip",
+      "inputs": ["getitem_12", "min_val_cast", "max_val_cast"],
+      "outputs": ["hardtanh_3"],
+      "attrs": {}
+    },
+    {
+      "id": 9,
+      "op": "Conv",
+      "inputs": ["hardtanh_3", "features.2.conv.2.weight", "features.2.conv.2.weight_bias"],
+      "outputs": ["getitem_15"],
+      "attrs": {"dilations": [1, 1], "group": [1], "pads": [0, 0, 0, 0], "strides": [1, 1]}
+    },
+    {
+      "id": 10,
+      "op": "Conv",
+      "inputs": ["getitem_15", "features.3.conv.0.0.weight", "features.3.conv.0.0.weight_bias"],
+      "outputs": ["getitem_18"],
+      "attrs": {"dilations": [1, 1], "group": [1], "pads": [0, 0, 0, 0], "strides": [1, 1]}
+    },
+    {
+      "id": 11,
+      "op": "Clip",
+      "inputs": ["getitem_18", "min_val_cast", "max_val_cast"],
+      "outputs": ["hardtanh_4"],
+      "attrs": {}
+    },
+    {
+      "id": 12,
+      "op": "Conv",
+      "inputs": ["hardtanh_4", "features.3.conv.1.0.weight", "features.3.conv.1.0.weight_bias"],
+      "outputs": ["getitem_21"],
+      "attrs": {"dilations": [1, 1], "group": [144], "pads": [1, 1, 1, 1], "strides": [1, 1]}
+    },
+    {
+      "id": 13,
+      "op": "Clip",
+      "inputs": ["getitem_21", "min_val_cast", "max_val_cast"],
+      "outputs": ["hardtanh_5"],
+      "attrs": {}
+    },
+    {
+      "id": 14,
+      "op": "Conv",
+      "inputs": ["hardtanh_5", "features.3.conv.2.weight", "features.3.conv.2.weight_bias"],
+      "outputs": ["getitem_24"],
+      "attrs": {"dilations": [1, 1], "group": [1], "pads": [0, 0, 0, 0], "strides": [1, 1]}
+    },
+    {
+      "id": 15,
+      "op": "Add",
+      "inputs": ["getitem_15", "getitem_24"],
+      "outputs": ["add"],
+      "attrs": {}
+    },
+    {
+      "id": 16,
+      "op": "Conv",
+      "inputs": ["add", "features.4.conv.0.0.weight", "features.4.conv.0.0.weight_bias"],
+      "outputs": ["getitem_27"],
+      "attrs": {"dilations": [1, 1], "group": [1], "pads": [0, 0, 0, 0], "strides": [1, 1]}
+    },
+    {
+      "id": 17,
+      "op": "Clip",
+      "inputs": ["getitem_27", "min_val_cast", "max_val_cast"],
+      "outputs": ["hardtanh_6"],
+      "attrs": {}
+    },
+    {
+      "id": 18,
+      "op": "Conv",
+      "inputs": ["hardtanh_6", "features.4.conv.1.0.weight", "features.4.conv.1.0.weight_bias"],
+      "outputs": ["getitem_30"],
+      "attrs": {"dilations": [1, 1], "group": [144], "pads": [1, 1, 1, 1], "strides": [2, 2]}
+    },
+    {
+      "id": 19,
+      "op": "Clip",
+      "inputs": ["getitem_30", "min_val_cast", "max_val_cast"],
+      "outputs": ["hardtanh_7"],
+      "attrs": {}
+    },
+    {
+      "id": 20,
+      "op": "Conv",
+      "inputs": ["hardtanh_7", "features.4.conv.2.weight", "features.4.conv.2.weight_bias"],
+      "outputs": ["getitem_33"],
+      "attrs": {"dilations": [1, 1], "group": [1], "pads": [0, 0, 0, 0], "strides": [1, 1]}
+    },
+    {
+      "id": 21,
+      "op": "Conv",
+      "inputs": ["getitem_33", "features.5.conv.0.0.weight", "features.5.conv.0.0.weight_bias"],
+      "outputs": ["getitem_36"],
+      "attrs": {"dilations": [1, 1], "group": [1], "pads": [0, 0, 0, 0], "strides": [1, 1]}
+    },
+    {
+      "id": 22,
+      "op": "Clip",
+      "inputs": ["getitem_36", "min_val_cast", "max_val_cast"],
+      "outputs": ["hardtanh_8"],
+      "attrs": {}
+    },
+    {
+      "id": 23,
+      "op": "Conv",
+      "inputs": ["hardtanh_8", "features.5.conv.1.0.weight", "features.5.conv.1.0.weight_bias"],
+      "outputs": ["getitem_39"],
+      "attrs": {"dilations": [1, 1], "group": [192], "pads": [1, 1, 1, 1], "strides": [1, 1]}
+    },
+    {
+      "id": 24,
+      "op": "Clip",
+      "inputs": ["getitem_39", "min_val_cast", "max_val_cast"],
+      "outputs": ["hardtanh_9"],
+      "attrs": {}
+    },
+    {
+      "id": 25,
+      "op": "Conv",
+      "inputs": ["hardtanh_9", "features.5.conv.2.weight", "features.5.conv.2.weight_bias"],
+      "outputs": ["getitem_42"],
+      "attrs": {"dilations": [1, 1], "group": [1], "pads": [0, 0, 0, 0], "strides": [1, 1]}
+    },
+    {
+      "id": 26,
+      "op": "Add",
+      "inputs": ["getitem_33", "getitem_42"],
+      "outputs": ["add_1"],
+      "attrs": {}
+    },
+    {
+      "id": 27,
+      "op": "Conv",
+      "inputs": ["add_1", "features.6.conv.0.0.weight", "features.6.conv.0.0.weight_bias"],
+      "outputs": ["getitem_45"],
+      "attrs": {"dilations": [1, 1], "group": [1], "pads": [0, 0, 0, 0], "strides": [1, 1]}
+    },
+    {
+      "id": 28,
+      "op": "Clip",
+      "inputs": ["getitem_45", "min_val_cast", "max_val_cast"],
+      "outputs": ["hardtanh_10"],
+      "attrs": {}
+    },
+    {
+      "id": 29,
+      "op": "Conv",
+      "inputs": ["hardtanh_10", "features.6.conv.1.0.weight", "features.6.conv.1.0.weight_bias"],
+      "outputs": ["getitem_48"],
+      "attrs": {"dilations": [1, 1], "group": [192], "pads": [1, 1, 1, 1], "strides": [1, 1]}
+    },
+    {
+      "id": 30,
+      "op": "Clip",
+      "inputs": ["getitem_48", "min_val_cast", "max_val_cast"],
+      "outputs": ["hardtanh_11"],
+      "attrs": {}
+    },
+    {
+      "id": 31,
+      "op": "Conv",
+      "inputs": ["hardtanh_11", "features.6.conv.2.weight", "features.6.conv.2.weight_bias"],
+      "outputs": ["getitem_51"],
+      "attrs": {"dilations": [1, 1], "group": [1], "pads": [0, 0, 0, 0], "strides": [1, 1]}
+    },
+    {
+      "id": 32,
+      "op": "Add",
+      "inputs": ["add_1", "getitem_51"],
+      "outputs": ["add_2"],
+      "attrs": {}
+    },
+    {
+      "id": 33,
+      "op": "Conv",
+      "inputs": ["add_2", "features.7.conv.0.0.weight", "features.7.conv.0.0.weight_bias"],
+      "outputs": ["getitem_54"],
+      "attrs": {"dilations": [1, 1], "group": [1], "pads": [0, 0, 0, 0], "strides": [1, 1]}
+    },
+    {
+      "id": 34,
+      "op": "Clip",
+      "inputs": ["getitem_54", "min_val_cast", "max_val_cast"],
+      "outputs": ["hardtanh_12"],
+      "attrs": {}
+    },
+    {
+      "id": 35,
+      "op": "Conv",
+      "inputs": ["hardtanh_12", "features.7.conv.1.0.weight", "features.7.conv.1.0.weight_bias"],
+      "outputs": ["getitem_57"],
+      "attrs": {"dilations": [1, 1], "group": [192], "pads": [1, 1, 1, 1], "strides": [2, 2]}
+    },
+    {
+      "id": 36,
+      "op": "Clip",
+      "inputs": ["getitem_57", "min_val_cast", "max_val_cast"],
+      "outputs": ["hardtanh_13"],
+      "attrs": {}
+    },
+    {
+      "id": 37,
+      "op": "Conv",
+      "inputs": ["hardtanh_13", "features.7.conv.2.weight", "features.7.conv.2.weight_bias"],
+      "outputs": ["getitem_60"],
+      "attrs": {"dilations": [1, 1], "group": [1], "pads": [0, 0, 0, 0], "strides": [1, 1]}
+    },
+    {
+      "id": 38,
+      "op": "Conv",
+      "inputs": ["getitem_60", "features.8.conv.0.0.weight", "features.8.conv.0.0.weight_bias"],
+      "outputs": ["getitem_63"],
+      "attrs": {"dilations": [1, 1], "group": [1], "pads": [0, 0, 0, 0], "strides": [1, 1]}
+    },
+    {
+      "id": 39,
+      "op": "Clip",
+      "inputs": ["getitem_63", "min_val_cast", "max_val_cast"],
+      "outputs": ["hardtanh_14"],
+      "attrs": {}
+    },
+    {
+      "id": 40,
+      "op": "Conv",
+      "inputs": ["hardtanh_14", "features.8.conv.1.0.weight", "features.8.conv.1.0.weight_bias"],
+      "outputs": ["getitem_66"],
+      "attrs": {"dilations": [1, 1], "group": [384], "pads": [1, 1, 1, 1], "strides": [1, 1]}
+    },
+    {
+      "id": 41,
+      "op": "Clip",
+      "inputs": ["getitem_66", "min_val_cast", "max_val_cast"],
+      "outputs": ["hardtanh_15"],
+      "attrs": {}
+    },
+    {
+      "id": 42,
+      "op": "Conv",
+      "inputs": ["hardtanh_15", "features.8.conv.2.weight", "features.8.conv.2.weight_bias"],
+      "outputs": ["getitem_69"],
+      "attrs": {"dilations": [1, 1], "group": [1], "pads": [0, 0, 0, 0], "strides": [1, 1]}
+    },
+    {
+      "id": 43,
+      "op": "Add",
+      "inputs": ["getitem_60", "getitem_69"],
+      "outputs": ["add_3"],
+      "attrs": {}
+    },
+    {
+      "id": 44,
+      "op": "Conv",
+      "inputs": ["add_3", "features.9.conv.0.0.weight", "features.9.conv.0.0.weight_bias"],
+      "outputs": ["getitem_72"],
+      "attrs": {"dilations": [1, 1], "group": [1], "pads": [0, 0, 0, 0], "strides": [1, 1]}
+    },
+    {
+      "id": 45,
+      "op": "Clip",
+      "inputs": ["getitem_72", "min_val_cast", "max_val_cast"],
+      "outputs": ["hardtanh_16"],
+      "attrs": {}
+    },
+    {
+      "id": 46,
+      "op": "Conv",
+      "inputs": ["hardtanh_16", "features.9.conv.1.0.weight", "features.9.conv.1.0.weight_bias"],
+      "outputs": ["getitem_75"],
+      "attrs": {"dilations": [1, 1], "group": [384], "pads": [1, 1, 1, 1], "strides": [1, 1]}
+    },
+    {
+      "id": 47,
+      "op": "Clip",
+      "inputs": ["getitem_75", "min_val_cast", "max_val_cast"],
+      "outputs": ["hardtanh_17"],
+      "attrs": {}
+    },
+    {
+      "id": 48,
+      "op": "Conv",
+      "inputs": ["hardtanh_17", "features.9.conv.2.weight", "features.9.conv.2.weight_bias"],
+      "outputs": ["getitem_78"],
+      "attrs": {"dilations": [1, 1], "group": [1], "pads": [0, 0, 0, 0], "strides": [1, 1]}
+    },
+    {
+      "id": 49,
+      "op": "Add",
+      "inputs": ["add_3", "getitem_78"],
+      "outputs": ["add_4"],
+      "attrs": {}
+    },
+    {
+      "id": 50,
+      "op": "Conv",
+      "inputs": ["add_4", "features.10.conv.0.0.weight", "features.10.conv.0.0.weight_bias"],
+      "outputs": ["getitem_81"],
+      "attrs": {"dilations": [1, 1], "group": [1], "pads": [0, 0, 0, 0], "strides": [1, 1]}
+    },
+    {
+      "id": 51,
+      "op": "Clip",
+      "inputs": ["getitem_81", "min_val_cast", "max_val_cast"],
+      "outputs": ["hardtanh_18"],
+      "attrs": {}
+    },
+    {
+      "id": 52,
+      "op": "Conv",
+      "inputs": ["hardtanh_18", "features.10.conv.1.0.weight", "features.10.conv.1.0.weight_bias"],
+      "outputs": ["getitem_84"],
+      "attrs": {"dilations": [1, 1], "group": [384], "pads": [1, 1, 1, 1], "strides": [1, 1]}
+    },
+    {
+      "id": 53,
+      "op": "Clip",
+      "inputs": ["getitem_84", "min_val_cast", "max_val_cast"],
+      "outputs": ["hardtanh_19"],
+      "attrs": {}
+    },
+    {
+      "id": 54,
+      "op": "Conv",
+      "inputs": ["hardtanh_19", "features.10.conv.2.weight", "features.10.conv.2.weight_bias"],
+      "outputs": ["getitem_87"],
+      "attrs": {"dilations": [1, 1], "group": [1], "pads": [0, 0, 0, 0], "strides": [1, 1]}
+    },
+    {
+      "id": 55,
+      "op": "Add",
+      "inputs": ["add_4", "getitem_87"],
+      "outputs": ["add_5"],
+      "attrs": {}
+    },
+    {
+      "id": 56,
+      "op": "Conv",
+      "inputs": ["add_5", "features.11.conv.0.0.weight", "features.11.conv.0.0.weight_bias"],
+      "outputs": ["getitem_90"],
+      "attrs": {"dilations": [1, 1], "group": [1], "pads": [0, 0, 0, 0], "strides": [1, 1]}
+    },
+    {
+      "id": 57,
+      "op": "Clip",
+      "inputs": ["getitem_90", "min_val_cast", "max_val_cast"],
+      "outputs": ["hardtanh_20"],
+      "attrs": {}
+    },
+    {
+      "id": 58,
+      "op": "Conv",
+      "inputs": ["hardtanh_20", "features.11.conv.1.0.weight", "features.11.conv.1.0.weight_bias"],
+      "outputs": ["getitem_93"],
+      "attrs": {"dilations": [1, 1], "group": [384], "pads": [1, 1, 1, 1], "strides": [1, 1]}
+    },
+    {
+      "id": 59,
+      "op": "Clip",
+      "inputs": ["getitem_93", "min_val_cast", "max_val_cast"],
+      "outputs": ["hardtanh_21"],
+      "attrs": {}
+    },
+    {
+      "id": 60,
+      "op": "Conv",
+      "inputs": ["hardtanh_21", "features.11.conv.2.weight", "features.11.conv.2.weight_bias"],
+      "outputs": ["getitem_96"],
+      "attrs": {"dilations": [1, 1], "group": [1], "pads": [0, 0, 0, 0], "strides": [1, 1]}
+    },
+    {
+      "id": 61,
+      "op": "Conv",
+      "inputs": ["getitem_96", "features.12.conv.0.0.weight", "features.12.conv.0.0.weight_bias"],
+      "outputs": ["getitem_99"],
+      "attrs": {"dilations": [1, 1], "group": [1], "pads": [0, 0, 0, 0], "strides": [1, 1]}
+    },
+    {
+      "id": 62,
+      "op": "Clip",
+      "inputs": ["getitem_99", "min_val_cast", "max_val_cast"],
+      "outputs": ["hardtanh_22"],
+      "attrs": {}
+    },
+    {
+      "id": 63,
+      "op": "Conv",
+      "inputs": ["hardtanh_22", "features.12.conv.1.0.weight", "features.12.conv.1.0.weight_bias"],
+      "outputs": ["getitem_102"],
+      "attrs": {"dilations": [1, 1], "group": [576], "pads": [1, 1, 1, 1], "strides": [1, 1]}
+    },
+    {
+      "id": 64,
+      "op": "Clip",
+      "inputs": ["getitem_102", "min_val_cast", "max_val_cast"],
+      "outputs": ["hardtanh_23"],
+      "attrs": {}
+    },
+    {
+      "id": 65,
+      "op": "Conv",
+      "inputs": ["hardtanh_23", "features.12.conv.2.weight", "features.12.conv.2.weight_bias"],
+      "outputs": ["getitem_105"],
+      "attrs": {"dilations": [1, 1], "group": [1], "pads": [0, 0, 0, 0], "strides": [1, 1]}
+    },
+    {
+      "id": 66,
+      "op": "Add",
+      "inputs": ["getitem_96", "getitem_105"],
+      "outputs": ["add_6"],
+      "attrs": {}
+    },
+    {
+      "id": 67,
+      "op": "Conv",
+      "inputs": ["add_6", "features.13.conv.0.0.weight", "features.13.conv.0.0.weight_bias"],
+      "outputs": ["getitem_108"],
+      "attrs": {"dilations": [1, 1], "group": [1], "pads": [0, 0, 0, 0], "strides": [1, 1]}
+    },
+    {
+      "id": 68,
+      "op": "Clip",
+      "inputs": ["getitem_108", "min_val_cast", "max_val_cast"],
+      "outputs": ["hardtanh_24"],
+      "attrs": {}
+    },
+    {
+      "id": 69,
+      "op": "Conv",
+      "inputs": ["hardtanh_24", "features.13.conv.1.0.weight", "features.13.conv.1.0.weight_bias"],
+      "outputs": ["getitem_111"],
+      "attrs": {"dilations": [1, 1], "group": [576], "pads": [1, 1, 1, 1], "strides": [1, 1]}
+    },
+    {
+      "id": 70,
+      "op": "Clip",
+      "inputs": ["getitem_111", "min_val_cast", "max_val_cast"],
+      "outputs": ["hardtanh_25"],
+      "attrs": {}
+    },
+    {
+      "id": 71,
+      "op": "Conv",
+      "inputs": ["hardtanh_25", "features.13.conv.2.weight", "features.13.conv.2.weight_bias"],
+      "outputs": ["getitem_114"],
+      "attrs": {"dilations": [1, 1], "group": [1], "pads": [0, 0, 0, 0], "strides": [1, 1]}
+    },
+    {
+      "id": 72,
+      "op": "Add",
+      "inputs": ["add_6", "getitem_114"],
+      "outputs": ["add_7"],
+      "attrs": {}
+    },
+    {
+      "id": 73,
+      "op": "Conv",
+      "inputs": ["add_7", "features.14.conv.0.0.weight", "features.14.conv.0.0.weight_bias"],
+      "outputs": ["getitem_117"],
+      "attrs": {"dilations": [1, 1], "group": [1], "pads": [0, 0, 0, 0], "strides": [1, 1]}
+    },
+    {
+      "id": 74,
+      "op": "Clip",
+      "inputs": ["getitem_117", "min_val_cast", "max_val_cast"],
+      "outputs": ["hardtanh_26"],
+      "attrs": {}
+    },
+    {
+      "id": 75,
+      "op": "Conv",
+      "inputs": ["hardtanh_26", "features.14.conv.1.0.weight", "features.14.conv.1.0.weight_bias"],
+      "outputs": ["getitem_120"],
+      "attrs": {"dilations": [1, 1], "group": [576], "pads": [1, 1, 1, 1], "strides": [2, 2]}
+    },
+    {
+      "id": 76,
+      "op": "Clip",
+      "inputs": ["getitem_120", "min_val_cast", "max_val_cast"],
+      "outputs": ["hardtanh_27"],
+      "attrs": {}
+    },
+    {
+      "id": 77,
+      "op": "Conv",
+      "inputs": ["hardtanh_27", "features.14.conv.2.weight", "features.14.conv.2.weight_bias"],
+      "outputs": ["getitem_123"],
+      "attrs": {"dilations": [1, 1], "group": [1], "pads": [0, 0, 0, 0], "strides": [1, 1]}
+    },
+    {
+      "id": 78,
+      "op": "Conv",
+      "inputs": ["getitem_123", "features.15.conv.0.0.weight", "features.15.conv.0.0.weight_bias"],
+      "outputs": ["getitem_126"],
+      "attrs": {"dilations": [1, 1], "group": [1], "pads": [0, 0, 0, 0], "strides": [1, 1]}
+    },
+    {
+      "id": 79,
+      "op": "Clip",
+      "inputs": ["getitem_126", "min_val_cast", "max_val_cast"],
+      "outputs": ["hardtanh_28"],
+      "attrs": {}
+    },
+    {
+      "id": 80,
+      "op": "Conv",
+      "inputs": ["hardtanh_28", "features.15.conv.1.0.weight", "features.15.conv.1.0.weight_bias"],
+      "outputs": ["getitem_129"],
+      "attrs": {"dilations": [1, 1], "group": [960], "pads": [1, 1, 1, 1], "strides": [1, 1]}
+    },
+    {
+      "id": 81,
+      "op": "Clip",
+      "inputs": ["getitem_129", "min_val_cast", "max_val_cast"],
+      "outputs": ["hardtanh_29"],
+      "attrs": {}
+    },
+    {
+      "id": 82,
+      "op": "Conv",
+      "inputs": ["hardtanh_29", "features.15.conv.2.weight", "features.15.conv.2.weight_bias"],
+      "outputs": ["getitem_132"],
+      "attrs": {"dilations": [1, 1], "group": [1], "pads": [0, 0, 0, 0], "strides": [1, 1]}
+    },
+    {
+      "id": 83,
+      "op": "Add",
+      "inputs": ["getitem_123", "getitem_132"],
+      "outputs": ["add_8"],
+      "attrs": {}
+    },
+    {
+      "id": 84,
+      "op": "Conv",
+      "inputs": ["add_8", "features.16.conv.0.0.weight", "features.16.conv.0.0.weight_bias"],
+      "outputs": ["getitem_135"],
+      "attrs": {"dilations": [1, 1], "group": [1], "pads": [0, 0, 0, 0], "strides": [1, 1]}
+    },
+    {
+      "id": 85,
+      "op": "Clip",
+      "inputs": ["getitem_135", "min_val_cast", "max_val_cast"],
+      "outputs": ["hardtanh_30"],
+      "attrs": {}
+    },
+    {
+      "id": 86,
+      "op": "Conv",
+      "inputs": ["hardtanh_30", "features.16.conv.1.0.weight", "features.16.conv.1.0.weight_bias"],
+      "outputs": ["getitem_138"],
+      "attrs": {"dilations": [1, 1], "group": [960], "pads": [1, 1, 1, 1], "strides": [1, 1]}
+    },
+    {
+      "id": 87,
+      "op": "Clip",
+      "inputs": ["getitem_138", "min_val_cast", "max_val_cast"],
+      "outputs": ["hardtanh_31"],
+      "attrs": {}
+    },
+    {
+      "id": 88,
+      "op": "Conv",
+      "inputs": ["hardtanh_31", "features.16.conv.2.weight", "features.16.conv.2.weight_bias"],
+      "outputs": ["getitem_141"],
+      "attrs": {"dilations": [1, 1], "group": [1], "pads": [0, 0, 0, 0], "strides": [1, 1]}
+    },
+    {
+      "id": 89,
+      "op": "Add",
+      "inputs": ["add_8", "getitem_141"],
+      "outputs": ["add_9"],
+      "attrs": {}
+    },
+    {
+      "id": 90,
+      "op": "Conv",
+      "inputs": ["add_9", "features.17.conv.0.0.weight", "features.17.conv.0.0.weight_bias"],
+      "outputs": ["getitem_144"],
+      "attrs": {"dilations": [1, 1], "group": [1], "pads": [0, 0, 0, 0], "strides": [1, 1]}
+    },
+    {
+      "id": 91,
+      "op": "Clip",
+      "inputs": ["getitem_144", "min_val_cast", "max_val_cast"],
+      "outputs": ["hardtanh_32"],
+      "attrs": {}
+    },
+    {
+      "id": 92,
+      "op": "Conv",
+      "inputs": ["hardtanh_32", "features.17.conv.1.0.weight", "features.17.conv.1.0.weight_bias"],
+      "outputs": ["getitem_147"],
+      "attrs": {"dilations": [1, 1], "group": [960], "pads": [1, 1, 1, 1], "strides": [1, 1]}
+    },
+    {
+      "id": 93,
+      "op": "Clip",
+      "inputs": ["getitem_147", "min_val_cast", "max_val_cast"],
+      "outputs": ["hardtanh_33"],
+      "attrs": {}
+    },
+    {
+      "id": 94,
+      "op": "Conv",
+      "inputs": ["hardtanh_33", "features.17.conv.2.weight", "features.17.conv.2.weight_bias"],
+      "outputs": ["getitem_150"],
+      "attrs": {"dilations": [1, 1], "group": [1], "pads": [0, 0, 0, 0], "strides": [1, 1]}
+    },
+    {
+      "id": 95,
+      "op": "Conv",
+      "inputs": ["getitem_150", "features.18.0.weight", "features.18.0.weight_bias"],
+      "outputs": ["getitem_153"],
+      "attrs": {"dilations": [1, 1], "group": [1], "pads": [0, 0, 0, 0], "strides": [1, 1]}
+    },
+    {
+      "id": 96,
+      "op": "Clip",
+      "inputs": ["getitem_153", "min_val_cast", "max_val_cast"],
+      "outputs": ["hardtanh_34"],
+      "attrs": {}
+    },
+    {
+      "id": 97,
+      "op": "ReduceMean",
+      "inputs": ["hardtanh_34", "val_577"],
+      "outputs": ["mean"],
+      "attrs": {"keepdims": [1], "noop_with_empty_axes": [0]}
+    },
+    {
+      "id": 98,
+      "op": "Reshape",
+      "inputs": ["mean", "val_581"],
+      "outputs": ["view"],
+      "attrs": {"allowzero": [1]}
+    },
+    {
+      "id": 99,
+      "op": "Gemm",
+      "inputs": ["view", "classifier.1.weight", "classifier.1.bias"],
+      "outputs": ["output"],
+      "attrs": {"transA": [0], "transB": [1]}
+    }
+  ],
+  "tensors": {
+    "add": {
+      "shape": [1, 24, 56, 56],
+      "has_data": false
+    },
+    "add_1": {
+      "shape": [1, 32, 28, 28],
+      "has_data": false
+    },
+    "add_2": {
+      "shape": [1, 32, 28, 28],
+      "has_data": false
+    },
+    "add_3": {
+      "shape": [1, 64, 14, 14],
+      "has_data": false
+    },
+    "add_4": {
+      "shape": [1, 64, 14, 14],
+      "has_data": false
+    },
+    "add_5": {
+      "shape": [1, 64, 14, 14],
+      "has_data": false
+    },
+    "add_6": {
+      "shape": [1, 96, 14, 14],
+      "has_data": false
+    },
+    "add_7": {
+      "shape": [1, 96, 14, 14],
+      "has_data": false
+    },
+    "add_8": {
+      "shape": [1, 160, 7, 7],
+      "has_data": false
+    },
+    "add_9": {
+      "shape": [1, 160, 7, 7],
+      "has_data": false
+    },
+    "classifier.1.bias": {
+      "shape": [1000],
+      "has_data": true,
+      "offset": 0,
+      "byte_length": 4000
+    },
+    "classifier.1.weight": {
+      "shape": [1000, 1280],
+      "has_data": true,
+      "offset": 4000,
+      "byte_length": 5120000
+    },
+    "features.0.0.weight": {
+      "shape": [32, 3, 3, 3],
+      "has_data": true,
+      "offset": 5124000,
+      "byte_length": 3456
+    },
+    "features.0.0.weight_bias": {
+      "shape": [32],
+      "has_data": true,
+      "offset": 5127456,
+      "byte_length": 128
+    },
+    "features.1.conv.0.0.weight": {
+      "shape": [32, 1, 3, 3],
+      "has_data": true,
+      "offset": 5127584,
+      "byte_length": 1152
+    },
+    "features.1.conv.0.0.weight_bias": {
+      "shape": [32],
+      "has_data": true,
+      "offset": 5128736,
+      "byte_length": 128
+    },
+    "features.1.conv.1.weight": {
+      "shape": [16, 32, 1, 1],
+      "has_data": true,
+      "offset": 5128864,
+      "byte_length": 2048
+    },
+    "features.1.conv.1.weight_bias": {
+      "shape": [16],
+      "has_data": true,
+      "offset": 5130912,
+      "byte_length": 64
+    },
+    "features.10.conv.0.0.weight": {
+      "shape": [384, 64, 1, 1],
+      "has_data": true,
+      "offset": 5130976,
+      "byte_length": 98304
+    },
+    "features.10.conv.0.0.weight_bias": {
+      "shape": [384],
+      "has_data": true,
+      "offset": 5229280,
+      "byte_length": 1536
+    },
+    "features.10.conv.1.0.weight": {
+      "shape": [384, 1, 3, 3],
+      "has_data": true,
+      "offset": 5230816,
+      "byte_length": 13824
+    },
+    "features.10.conv.1.0.weight_bias": {
+      "shape": [384],
+      "has_data": true,
+      "offset": 5244640,
+      "byte_length": 1536
+    },
+    "features.10.conv.2.weight": {
+      "shape": [64, 384, 1, 1],
+      "has_data": true,
+      "offset": 5246176,
+      "byte_length": 98304
+    },
+    "features.10.conv.2.weight_bias": {
+      "shape": [64],
+      "has_data": true,
+      "offset": 5344480,
+      "byte_length": 256
+    },
+    "features.11.conv.0.0.weight": {
+      "shape": [384, 64, 1, 1],
+      "has_data": true,
+      "offset": 5344736,
+      "byte_length": 98304
+    },
+    "features.11.conv.0.0.weight_bias": {
+      "shape": [384],
+      "has_data": true,
+      "offset": 5443040,
+      "byte_length": 1536
+    },
+    "features.11.conv.1.0.weight": {
+      "shape": [384, 1, 3, 3],
+      "has_data": true,
+      "offset": 5444576,
+      "byte_length": 13824
+    },
+    "features.11.conv.1.0.weight_bias": {
+      "shape": [384],
+      "has_data": true,
+      "offset": 5458400,
+      "byte_length": 1536
+    },
+    "features.11.conv.2.weight": {
+      "shape": [96, 384, 1, 1],
+      "has_data": true,
+      "offset": 5459936,
+      "byte_length": 147456
+    },
+    "features.11.conv.2.weight_bias": {
+      "shape": [96],
+      "has_data": true,
+      "offset": 5607392,
+      "byte_length": 384
+    },
+    "features.12.conv.0.0.weight": {
+      "shape": [576, 96, 1, 1],
+      "has_data": true,
+      "offset": 5607776,
+      "byte_length": 221184
+    },
+    "features.12.conv.0.0.weight_bias": {
+      "shape": [576],
+      "has_data": true,
+      "offset": 5828960,
+      "byte_length": 2304
+    },
+    "features.12.conv.1.0.weight": {
+      "shape": [576, 1, 3, 3],
+      "has_data": true,
+      "offset": 5831264,
+      "byte_length": 20736
+    },
+    "features.12.conv.1.0.weight_bias": {
+      "shape": [576],
+      "has_data": true,
+      "offset": 5852000,
+      "byte_length": 2304
+    },
+    "features.12.conv.2.weight": {
+      "shape": [96, 576, 1, 1],
+      "has_data": true,
+      "offset": 5854304,
+      "byte_length": 221184
+    },
+    "features.12.conv.2.weight_bias": {
+      "shape": [96],
+      "has_data": true,
+      "offset": 6075488,
+      "byte_length": 384
+    },
+    "features.13.conv.0.0.weight": {
+      "shape": [576, 96, 1, 1],
+      "has_data": true,
+      "offset": 6075872,
+      "byte_length": 221184
+    },
+    "features.13.conv.0.0.weight_bias": {
+      "shape": [576],
+      "has_data": true,
+      "offset": 6297056,
+      "byte_length": 2304
+    },
+    "features.13.conv.1.0.weight": {
+      "shape": [576, 1, 3, 3],
+      "has_data": true,
+      "offset": 6299360,
+      "byte_length": 20736
+    },
+    "features.13.conv.1.0.weight_bias": {
+      "shape": [576],
+      "has_data": true,
+      "offset": 6320096,
+      "byte_length": 2304
+    },
+    "features.13.conv.2.weight": {
+      "shape": [96, 576, 1, 1],
+      "has_data": true,
+      "offset": 6322400,
+      "byte_length": 221184
+    },
+    "features.13.conv.2.weight_bias": {
+      "shape": [96],
+      "has_data": true,
+      "offset": 6543584,
+      "byte_length": 384
+    },
+    "features.14.conv.0.0.weight": {
+      "shape": [576, 96, 1, 1],
+      "has_data": true,
+      "offset": 6543968,
+      "byte_length": 221184
+    },
+    "features.14.conv.0.0.weight_bias": {
+      "shape": [576],
+      "has_data": true,
+      "offset": 6765152,
+      "byte_length": 2304
+    },
+    "features.14.conv.1.0.weight": {
+      "shape": [576, 1, 3, 3],
+      "has_data": true,
+      "offset": 6767456,
+      "byte_length": 20736
+    },
+    "features.14.conv.1.0.weight_bias": {
+      "shape": [576],
+      "has_data": true,
+      "offset": 6788192,
+      "byte_length": 2304
+    },
+    "features.14.conv.2.weight": {
+      "shape": [160, 576, 1, 1],
+      "has_data": true,
+      "offset": 6790496,
+      "byte_length": 368640
+    },
+    "features.14.conv.2.weight_bias": {
+      "shape": [160],
+      "has_data": true,
+      "offset": 7159136,
+      "byte_length": 640
+    },
+    "features.15.conv.0.0.weight": {
+      "shape": [960, 160, 1, 1],
+      "has_data": true,
+      "offset": 7159776,
+      "byte_length": 614400
+    },
+    "features.15.conv.0.0.weight_bias": {
+      "shape": [960],
+      "has_data": true,
+      "offset": 7774176,
+      "byte_length": 3840
+    },
+    "features.15.conv.1.0.weight": {
+      "shape": [960, 1, 3, 3],
+      "has_data": true,
+      "offset": 7778016,
+      "byte_length": 34560
+    },
+    "features.15.conv.1.0.weight_bias": {
+      "shape": [960],
+      "has_data": true,
+      "offset": 7812576,
+      "byte_length": 3840
+    },
+    "features.15.conv.2.weight": {
+      "shape": [160, 960, 1, 1],
+      "has_data": true,
+      "offset": 7816416,
+      "byte_length": 614400
+    },
+    "features.15.conv.2.weight_bias": {
+      "shape": [160],
+      "has_data": true,
+      "offset": 8430816,
+      "byte_length": 640
+    },
+    "features.16.conv.0.0.weight": {
+      "shape": [960, 160, 1, 1],
+      "has_data": true,
+      "offset": 8431456,
+      "byte_length": 614400
+    },
+    "features.16.conv.0.0.weight_bias": {
+      "shape": [960],
+      "has_data": true,
+      "offset": 9045856,
+      "byte_length": 3840
+    },
+    "features.16.conv.1.0.weight": {
+      "shape": [960, 1, 3, 3],
+      "has_data": true,
+      "offset": 9049696,
+      "byte_length": 34560
+    },
+    "features.16.conv.1.0.weight_bias": {
+      "shape": [960],
+      "has_data": true,
+      "offset": 9084256,
+      "byte_length": 3840
+    },
+    "features.16.conv.2.weight": {
+      "shape": [160, 960, 1, 1],
+      "has_data": true,
+      "offset": 9088096,
+      "byte_length": 614400
+    },
+    "features.16.conv.2.weight_bias": {
+      "shape": [160],
+      "has_data": true,
+      "offset": 9702496,
+      "byte_length": 640
+    },
+    "features.17.conv.0.0.weight": {
+      "shape": [960, 160, 1, 1],
+      "has_data": true,
+      "offset": 9703136,
+      "byte_length": 614400
+    },
+    "features.17.conv.0.0.weight_bias": {
+      "shape": [960],
+      "has_data": true,
+      "offset": 10317536,
+      "byte_length": 3840
+    },
+    "features.17.conv.1.0.weight": {
+      "shape": [960, 1, 3, 3],
+      "has_data": true,
+      "offset": 10321376,
+      "byte_length": 34560
+    },
+    "features.17.conv.1.0.weight_bias": {
+      "shape": [960],
+      "has_data": true,
+      "offset": 10355936,
+      "byte_length": 3840
+    },
+    "features.17.conv.2.weight": {
+      "shape": [320, 960, 1, 1],
+      "has_data": true,
+      "offset": 10359776,
+      "byte_length": 1228800
+    },
+    "features.17.conv.2.weight_bias": {
+      "shape": [320],
+      "has_data": true,
+      "offset": 11588576,
+      "byte_length": 1280
+    },
+    "features.18.0.weight": {
+      "shape": [1280, 320, 1, 1],
+      "has_data": true,
+      "offset": 11589856,
+      "byte_length": 1638400
+    },
+    "features.18.0.weight_bias": {
+      "shape": [1280],
+      "has_data": true,
+      "offset": 13228256,
+      "byte_length": 5120
+    },
+    "features.2.conv.0.0.weight": {
+      "shape": [96, 16, 1, 1],
+      "has_data": true,
+      "offset": 13233376,
+      "byte_length": 6144
+    },
+    "features.2.conv.0.0.weight_bias": {
+      "shape": [96],
+      "has_data": true,
+      "offset": 13239520,
+      "byte_length": 384
+    },
+    "features.2.conv.1.0.weight": {
+      "shape": [96, 1, 3, 3],
+      "has_data": true,
+      "offset": 13239904,
+      "byte_length": 3456
+    },
+    "features.2.conv.1.0.weight_bias": {
+      "shape": [96],
+      "has_data": true,
+      "offset": 13243360,
+      "byte_length": 384
+    },
+    "features.2.conv.2.weight": {
+      "shape": [24, 96, 1, 1],
+      "has_data": true,
+      "offset": 13243744,
+      "byte_length": 9216
+    },
+    "features.2.conv.2.weight_bias": {
+      "shape": [24],
+      "has_data": true,
+      "offset": 13252960,
+      "byte_length": 96
+    },
+    "features.3.conv.0.0.weight": {
+      "shape": [144, 24, 1, 1],
+      "has_data": true,
+      "offset": 13253056,
+      "byte_length": 13824
+    },
+    "features.3.conv.0.0.weight_bias": {
+      "shape": [144],
+      "has_data": true,
+      "offset": 13266880,
+      "byte_length": 576
+    },
+    "features.3.conv.1.0.weight": {
+      "shape": [144, 1, 3, 3],
+      "has_data": true,
+      "offset": 13267456,
+      "byte_length": 5184
+    },
+    "features.3.conv.1.0.weight_bias": {
+      "shape": [144],
+      "has_data": true,
+      "offset": 13272640,
+      "byte_length": 576
+    },
+    "features.3.conv.2.weight": {
+      "shape": [24, 144, 1, 1],
+      "has_data": true,
+      "offset": 13273216,
+      "byte_length": 13824
+    },
+    "features.3.conv.2.weight_bias": {
+      "shape": [24],
+      "has_data": true,
+      "offset": 13287040,
+      "byte_length": 96
+    },
+    "features.4.conv.0.0.weight": {
+      "shape": [144, 24, 1, 1],
+      "has_data": true,
+      "offset": 13287136,
+      "byte_length": 13824
+    },
+    "features.4.conv.0.0.weight_bias": {
+      "shape": [144],
+      "has_data": true,
+      "offset": 13300960,
+      "byte_length": 576
+    },
+    "features.4.conv.1.0.weight": {
+      "shape": [144, 1, 3, 3],
+      "has_data": true,
+      "offset": 13301536,
+      "byte_length": 5184
+    },
+    "features.4.conv.1.0.weight_bias": {
+      "shape": [144],
+      "has_data": true,
+      "offset": 13306720,
+      "byte_length": 576
+    },
+    "features.4.conv.2.weight": {
+      "shape": [32, 144, 1, 1],
+      "has_data": true,
+      "offset": 13307296,
+      "byte_length": 18432
+    },
+    "features.4.conv.2.weight_bias": {
+      "shape": [32],
+      "has_data": true,
+      "offset": 13325728,
+      "byte_length": 128
+    },
+    "features.5.conv.0.0.weight": {
+      "shape": [192, 32, 1, 1],
+      "has_data": true,
+      "offset": 13325856,
+      "byte_length": 24576
+    },
+    "features.5.conv.0.0.weight_bias": {
+      "shape": [192],
+      "has_data": true,
+      "offset": 13350432,
+      "byte_length": 768
+    },
+    "features.5.conv.1.0.weight": {
+      "shape": [192, 1, 3, 3],
+      "has_data": true,
+      "offset": 13351200,
+      "byte_length": 6912
+    },
+    "features.5.conv.1.0.weight_bias": {
+      "shape": [192],
+      "has_data": true,
+      "offset": 13358112,
+      "byte_length": 768
+    },
+    "features.5.conv.2.weight": {
+      "shape": [32, 192, 1, 1],
+      "has_data": true,
+      "offset": 13358880,
+      "byte_length": 24576
+    },
+    "features.5.conv.2.weight_bias": {
+      "shape": [32],
+      "has_data": true,
+      "offset": 13383456,
+      "byte_length": 128
+    },
+    "features.6.conv.0.0.weight": {
+      "shape": [192, 32, 1, 1],
+      "has_data": true,
+      "offset": 13383584,
+      "byte_length": 24576
+    },
+    "features.6.conv.0.0.weight_bias": {
+      "shape": [192],
+      "has_data": true,
+      "offset": 13408160,
+      "byte_length": 768
+    },
+    "features.6.conv.1.0.weight": {
+      "shape": [192, 1, 3, 3],
+      "has_data": true,
+      "offset": 13408928,
+      "byte_length": 6912
+    },
+    "features.6.conv.1.0.weight_bias": {
+      "shape": [192],
+      "has_data": true,
+      "offset": 13415840,
+      "byte_length": 768
+    },
+    "features.6.conv.2.weight": {
+      "shape": [32, 192, 1, 1],
+      "has_data": true,
+      "offset": 13416608,
+      "byte_length": 24576
+    },
+    "features.6.conv.2.weight_bias": {
+      "shape": [32],
+      "has_data": true,
+      "offset": 13441184,
+      "byte_length": 128
+    },
+    "features.7.conv.0.0.weight": {
+      "shape": [192, 32, 1, 1],
+      "has_data": true,
+      "offset": 13441312,
+      "byte_length": 24576
+    },
+    "features.7.conv.0.0.weight_bias": {
+      "shape": [192],
+      "has_data": true,
+      "offset": 13465888,
+      "byte_length": 768
+    },
+    "features.7.conv.1.0.weight": {
+      "shape": [192, 1, 3, 3],
+      "has_data": true,
+      "offset": 13466656,
+      "byte_length": 6912
+    },
+    "features.7.conv.1.0.weight_bias": {
+      "shape": [192],
+      "has_data": true,
+      "offset": 13473568,
+      "byte_length": 768
+    },
+    "features.7.conv.2.weight": {
+      "shape": [64, 192, 1, 1],
+      "has_data": true,
+      "offset": 13474336,
+      "byte_length": 49152
+    },
+    "features.7.conv.2.weight_bias": {
+      "shape": [64],
+      "has_data": true,
+      "offset": 13523488,
+      "byte_length": 256
+    },
+    "features.8.conv.0.0.weight": {
+      "shape": [384, 64, 1, 1],
+      "has_data": true,
+      "offset": 13523744,
+      "byte_length": 98304
+    },
+    "features.8.conv.0.0.weight_bias": {
+      "shape": [384],
+      "has_data": true,
+      "offset": 13622048,
+      "byte_length": 1536
+    },
+    "features.8.conv.1.0.weight": {
+      "shape": [384, 1, 3, 3],
+      "has_data": true,
+      "offset": 13623584,
+      "byte_length": 13824
+    },
+    "features.8.conv.1.0.weight_bias": {
+      "shape": [384],
+      "has_data": true,
+      "offset": 13637408,
+      "byte_length": 1536
+    },
+    "features.8.conv.2.weight": {
+      "shape": [64, 384, 1, 1],
+      "has_data": true,
+      "offset": 13638944,
+      "byte_length": 98304
+    },
+    "features.8.conv.2.weight_bias": {
+      "shape": [64],
+      "has_data": true,
+      "offset": 13737248,
+      "byte_length": 256
+    },
+    "features.9.conv.0.0.weight": {
+      "shape": [384, 64, 1, 1],
+      "has_data": true,
+      "offset": 13737504,
+      "byte_length": 98304
+    },
+    "features.9.conv.0.0.weight_bias": {
+      "shape": [384],
+      "has_data": true,
+      "offset": 13835808,
+      "byte_length": 1536
+    },
+    "features.9.conv.1.0.weight": {
+      "shape": [384, 1, 3, 3],
+      "has_data": true,
+      "offset": 13837344,
+      "byte_length": 13824
+    },
+    "features.9.conv.1.0.weight_bias": {
+      "shape": [384],
+      "has_data": true,
+      "offset": 13851168,
+      "byte_length": 1536
+    },
+    "features.9.conv.2.weight": {
+      "shape": [64, 384, 1, 1],
+      "has_data": true,
+      "offset": 13852704,
+      "byte_length": 98304
+    },
+    "features.9.conv.2.weight_bias": {
+      "shape": [64],
+      "has_data": true,
+      "offset": 13951008,
+      "byte_length": 256
+    },
+    "getitem": {
+      "shape": [1, 32, 112, 112],
+      "has_data": false
+    },
+    "getitem_102": {
+      "shape": [1, 576, 14, 14],
+      "has_data": false
+    },
+    "getitem_105": {
+      "shape": [1, 96, 14, 14],
+      "has_data": false
+    },
+    "getitem_108": {
+      "shape": [1, 576, 14, 14],
+      "has_data": false
+    },
+    "getitem_111": {
+      "shape": [1, 576, 14, 14],
+      "has_data": false
+    },
+    "getitem_114": {
+      "shape": [1, 96, 14, 14],
+      "has_data": false
+    },
+    "getitem_117": {
+      "shape": [1, 576, 14, 14],
+      "has_data": false
+    },
+    "getitem_12": {
+      "shape": [1, 96, 56, 56],
+      "has_data": false
+    },
+    "getitem_120": {
+      "shape": [1, 576, 7, 7],
+      "has_data": false
+    },
+    "getitem_123": {
+      "shape": [1, 160, 7, 7],
+      "has_data": false
+    },
+    "getitem_126": {
+      "shape": [1, 960, 7, 7],
+      "has_data": false
+    },
+    "getitem_129": {
+      "shape": [1, 960, 7, 7],
+      "has_data": false
+    },
+    "getitem_132": {
+      "shape": [1, 160, 7, 7],
+      "has_data": false
+    },
+    "getitem_135": {
+      "shape": [1, 960, 7, 7],
+      "has_data": false
+    },
+    "getitem_138": {
+      "shape": [1, 960, 7, 7],
+      "has_data": false
+    },
+    "getitem_141": {
+      "shape": [1, 160, 7, 7],
+      "has_data": false
+    },
+    "getitem_144": {
+      "shape": [1, 960, 7, 7],
+      "has_data": false
+    },
+    "getitem_147": {
+      "shape": [1, 960, 7, 7],
+      "has_data": false
+    },
+    "getitem_15": {
+      "shape": [1, 24, 56, 56],
+      "has_data": false
+    },
+    "getitem_150": {
+      "shape": [1, 320, 7, 7],
+      "has_data": false
+    },
+    "getitem_153": {
+      "shape": [1, 1280, 7, 7],
+      "has_data": false
+    },
+    "getitem_18": {
+      "shape": [1, 144, 56, 56],
+      "has_data": false
+    },
+    "getitem_21": {
+      "shape": [1, 144, 56, 56],
+      "has_data": false
+    },
+    "getitem_24": {
+      "shape": [1, 24, 56, 56],
+      "has_data": false
+    },
+    "getitem_27": {
+      "shape": [1, 144, 56, 56],
+      "has_data": false
+    },
+    "getitem_3": {
+      "shape": [1, 32, 112, 112],
+      "has_data": false
+    },
+    "getitem_30": {
+      "shape": [1, 144, 28, 28],
+      "has_data": false
+    },
+    "getitem_33": {
+      "shape": [1, 32, 28, 28],
+      "has_data": false
+    },
+    "getitem_36": {
+      "shape": [1, 192, 28, 28],
+      "has_data": false
+    },
+    "getitem_39": {
+      "shape": [1, 192, 28, 28],
+      "has_data": false
+    },
+    "getitem_42": {
+      "shape": [1, 32, 28, 28],
+      "has_data": false
+    },
+    "getitem_45": {
+      "shape": [1, 192, 28, 28],
+      "has_data": false
+    },
+    "getitem_48": {
+      "shape": [1, 192, 28, 28],
+      "has_data": false
+    },
+    "getitem_51": {
+      "shape": [1, 32, 28, 28],
+      "has_data": false
+    },
+    "getitem_54": {
+      "shape": [1, 192, 28, 28],
+      "has_data": false
+    },
+    "getitem_57": {
+      "shape": [1, 192, 14, 14],
+      "has_data": false
+    },
+    "getitem_6": {
+      "shape": [1, 16, 112, 112],
+      "has_data": false
+    },
+    "getitem_60": {
+      "shape": [1, 64, 14, 14],
+      "has_data": false
+    },
+    "getitem_63": {
+      "shape": [1, 384, 14, 14],
+      "has_data": false
+    },
+    "getitem_66": {
+      "shape": [1, 384, 14, 14],
+      "has_data": false
+    },
+    "getitem_69": {
+      "shape": [1, 64, 14, 14],
+      "has_data": false
+    },
+    "getitem_72": {
+      "shape": [1, 384, 14, 14],
+      "has_data": false
+    },
+    "getitem_75": {
+      "shape": [1, 384, 14, 14],
+      "has_data": false
+    },
+    "getitem_78": {
+      "shape": [1, 64, 14, 14],
+      "has_data": false
+    },
+    "getitem_81": {
+      "shape": [1, 384, 14, 14],
+      "has_data": false
+    },
+    "getitem_84": {
+      "shape": [1, 384, 14, 14],
+      "has_data": false
+    },
+    "getitem_87": {
+      "shape": [1, 64, 14, 14],
+      "has_data": false
+    },
+    "getitem_9": {
+      "shape": [1, 96, 112, 112],
+      "has_data": false
+    },
+    "getitem_90": {
+      "shape": [1, 384, 14, 14],
+      "has_data": false
+    },
+    "getitem_93": {
+      "shape": [1, 384, 14, 14],
+      "has_data": false
+    },
+    "getitem_96": {
+      "shape": [1, 96, 14, 14],
+      "has_data": false
+    },
+    "getitem_99": {
+      "shape": [1, 576, 14, 14],
+      "has_data": false
+    },
+    "hardtanh": {
+      "shape": [1, 32, 112, 112],
+      "has_data": false
+    },
+    "hardtanh_1": {
+      "shape": [1, 32, 112, 112],
+      "has_data": false
+    },
+    "hardtanh_10": {
+      "shape": [1, 192, 28, 28],
+      "has_data": false
+    },
+    "hardtanh_11": {
+      "shape": [1, 192, 28, 28],
+      "has_data": false
+    },
+    "hardtanh_12": {
+      "shape": [1, 192, 28, 28],
+      "has_data": false
+    },
+    "hardtanh_13": {
+      "shape": [1, 192, 14, 14],
+      "has_data": false
+    },
+    "hardtanh_14": {
+      "shape": [1, 384, 14, 14],
+      "has_data": false
+    },
+    "hardtanh_15": {
+      "shape": [1, 384, 14, 14],
+      "has_data": false
+    },
+    "hardtanh_16": {
+      "shape": [1, 384, 14, 14],
+      "has_data": false
+    },
+    "hardtanh_17": {
+      "shape": [1, 384, 14, 14],
+      "has_data": false
+    },
+    "hardtanh_18": {
+      "shape": [1, 384, 14, 14],
+      "has_data": false
+    },
+    "hardtanh_19": {
+      "shape": [1, 384, 14, 14],
+      "has_data": false
+    },
+    "hardtanh_2": {
+      "shape": [1, 96, 112, 112],
+      "has_data": false
+    },
+    "hardtanh_20": {
+      "shape": [1, 384, 14, 14],
+      "has_data": false
+    },
+    "hardtanh_21": {
+      "shape": [1, 384, 14, 14],
+      "has_data": false
+    },
+    "hardtanh_22": {
+      "shape": [1, 576, 14, 14],
+      "has_data": false
+    },
+    "hardtanh_23": {
+      "shape": [1, 576, 14, 14],
+      "has_data": false
+    },
+    "hardtanh_24": {
+      "shape": [1, 576, 14, 14],
+      "has_data": false
+    },
+    "hardtanh_25": {
+      "shape": [1, 576, 14, 14],
+      "has_data": false
+    },
+    "hardtanh_26": {
+      "shape": [1, 576, 14, 14],
+      "has_data": false
+    },
+    "hardtanh_27": {
+      "shape": [1, 576, 7, 7],
+      "has_data": false
+    },
+    "hardtanh_28": {
+      "shape": [1, 960, 7, 7],
+      "has_data": false
+    },
+    "hardtanh_29": {
+      "shape": [1, 960, 7, 7],
+      "has_data": false
+    },
+    "hardtanh_3": {
+      "shape": [1, 96, 56, 56],
+      "has_data": false
+    },
+    "hardtanh_30": {
+      "shape": [1, 960, 7, 7],
+      "has_data": false
+    },
+    "hardtanh_31": {
+      "shape": [1, 960, 7, 7],
+      "has_data": false
+    },
+    "hardtanh_32": {
+      "shape": [1, 960, 7, 7],
+      "has_data": false
+    },
+    "hardtanh_33": {
+      "shape": [1, 960, 7, 7],
+      "has_data": false
+    },
+    "hardtanh_34": {
+      "shape": [1, 1280, 7, 7],
+      "has_data": false
+    },
+    "hardtanh_4": {
+      "shape": [1, 144, 56, 56],
+      "has_data": false
+    },
+    "hardtanh_5": {
+      "shape": [1, 144, 56, 56],
+      "has_data": false
+    },
+    "hardtanh_6": {
+      "shape": [1, 144, 56, 56],
+      "has_data": false
+    },
+    "hardtanh_7": {
+      "shape": [1, 144, 28, 28],
+      "has_data": false
+    },
+    "hardtanh_8": {
+      "shape": [1, 192, 28, 28],
+      "has_data": false
+    },
+    "hardtanh_9": {
+      "shape": [1, 192, 28, 28],
+      "has_data": false
+    },
+    "input": {
+      "shape": [1, 3, 224, 224],
+      "has_data": false
+    },
+    "max_val_cast": {
+      "shape": [],
+      "has_data": true,
+      "offset": 13951264,
+      "byte_length": 4
+    },
+    "mean": {
+      "shape": [1, 1280, 1, 1],
+      "has_data": false
+    },
+    "min_val_cast": {
+      "shape": [],
+      "has_data": true,
+      "offset": 13951268,
+      "byte_length": 4
+    },
+    "output": {
+      "shape": [1, 1000],
+      "has_data": false
+    },
+    "val_577": {
+      "shape": [2],
+      "has_data": true,
+      "offset": 13951272,
+      "byte_length": 8
+    },
+    "val_581": {
+      "shape": [2],
+      "has_data": true,
+      "offset": 13951280,
+      "byte_length": 8
+    },
+    "view": {
+      "shape": [1, 1280],
+      "has_data": false
+    }
+  }
+}

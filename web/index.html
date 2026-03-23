@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TinyForge — MobileNetV2</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css?v=7">
+  <link rel="stylesheet" href="inference-style.css?v=3">
+</head>
+<body>
+
+  <!-- Top navigation bar -->
+  <nav class="nav">
+    <div class="nav-brand">
+      <span class="nav-name">TinyForge</span>
+    </div>
+
+    <div class="nav-model">MobileNetV2</div>
+
+    <!-- Theme toggle — animated pill switch -->
+    <button class="theme-toggle" id="theme-btn" title="Toggle theme" aria-label="Toggle dark mode">
+      <span class="theme-toggle-track">
+        <span class="theme-toggle-thumb" id="theme-thumb"></span>
+        <span class="theme-toggle-icon theme-toggle-sun">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        </span>
+        <span class="theme-toggle-icon theme-toggle-moon">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        </span>
+      </span>
+    </button>
+
+    <!-- Phase switcher -->
+    <div class="nav-phases">
+      <button class="phase-btn active" data-target="parser">
+        <span class="phase-num">01</span>
+        <span class="phase-label">Parser</span>
+      </button>
+      <button class="phase-btn" data-target="inference">
+        <span class="phase-num">02</span>
+        <span class="phase-label">Inference</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Screens -->
+  <div class="viewport" id="viewport">
+
+    <!-- Screen 1: Parser -->
+    <section class="screen" id="screen-parser">
+
+      <div class="screen-head">
+        <div class="screen-head-top">
+          <div>
+            <div class="screen-eyebrow">Phase 01 — Parser</div>
+            <h1 class="screen-title">Graph Structure</h1>
+            <p class="screen-subtitle">Each card is one operation the neural network performs on your image, reading left to right.</p>
+          </div>
+          <div class="screen-stats">
+            <span class="stat-pill" id="stat-nodes">—</span>
+            <span class="stat-pill" id="stat-tensors">—</span>
+            <span class="stat-pill" id="stat-weights">—</span>
+          </div>
+        </div>
+
+        <!-- Color legend — what the colors mean -->
+        <div class="legend" id="legend">
+          <span class="legend-label">Operations:</span>
+          <div class="legend-items" id="legend-items">
+            <!-- JS fills these -->
+          </div>
+        </div>
+      </div>
+
+      <!-- The graph -->
+      <div class="graph-area">
+        <!-- Scroll progress indicator -->
+        <div class="scroll-progress"><div class="scroll-progress-bar" id="scroll-bar"></div></div>
+
+        <div class="graph-track" id="graph-track">
+          <!-- JS renders node cards here -->
+        </div>
+
+        <!-- Scroll hint for first-time users -->
+        <div class="scroll-hint" id="scroll-hint">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          <span>Scroll to explore the network</span>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- Screen 2: Inference -->
+    <section class="screen screen-below" id="screen-inference">
+
+      <!-- STATE 1: Hero Upload -->
+      <div class="inf-hero" id="inf-hero">
+        <div class="inf-hero-inner">
+          <h2 class="inf-hero-title">See the Math</h2>
+          <p class="inf-hero-sub">Upload an image. Watch 100 operations transform it into a prediction.</p>
+          <div class="inf-drop-zone" id="inf-drop-zone">
+            <input type="file" accept="image/*" id="inf-file-input" hidden>
+            <img class="inf-preview" id="inf-preview" hidden alt="Preview">
+            <div class="inf-drop-prompt" id="inf-drop-prompt">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round">
+                <rect x="3" y="3" width="18" height="18" rx="2"/>
+                <circle cx="8.5" cy="8.5" r="1.5"/>
+                <polyline points="21 15 16 10 5 21"/>
+              </svg>
+              <span class="inf-drop-prompt-text">Drop image here or click to browse</span>
+              <span class="inf-drop-prompt-hint">JPG, PNG, WEBP</span>
+            </div>
+          </div>
+          <button class="inf-run-btn" id="inf-run-btn" disabled>Run Inference</button>
+        </div>
+      </div>
+
+      <!-- STATE 2: Walkthrough -->
+      <div class="inf-walkthrough" id="inf-walkthrough" hidden>
+        <!-- Thin progress rail -->
+        <div class="inf-progress-rail">
+          <div class="inf-progress-fill" id="inf-progress-fill"></div>
+        </div>
+
+        <!-- Atmospheric tint overlay -->
+        <div class="inf-tint" id="inf-tint"></div>
+
+        <!-- Main stage content -->
+        <div class="inf-stage">
+          <div class="inf-node-counter" id="inf-node-counter"></div>
+          <div class="inf-op-name" id="inf-op-name"></div>
+          <div class="inf-op-desc" id="inf-op-desc"></div>
+          <div class="inf-shape-info" id="inf-shape-info"></div>
+          <div class="inf-annotation" id="inf-annotation"></div>
+          <div class="inf-canvas-wrap">
+            <canvas id="inf-main-canvas"></canvas>
+            <div class="inf-canvas-glow"></div>
+          </div>
+        </div>
+
+        <!-- Controls bar -->
+        <div class="inf-controls">
+          <button class="inf-ctrl-btn playing" id="inf-play-pause" title="Pause (Space)">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+          </button>
+          <button class="inf-ctrl-btn" id="inf-step" title="Step forward (→)">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21"/><rect x="19" y="3" width="2" height="18"/></svg>
+          </button>
+          <div class="inf-speed-control">
+            <span class="inf-speed-label">Speed</span>
+            <input type="range" class="inf-speed-slider" id="inf-speed" min="0.5" max="10" step="0.5" value="1">
+            <span class="inf-speed-val" id="inf-speed-val">1×</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- STATE 3: Results -->
+      <div class="inf-results-screen" id="inf-results-screen" hidden>
+        <h2 class="inf-results-title">Prediction</h2>
+        <p class="inf-results-time" id="inf-results-time"></p>
+        <div class="inf-bar-chart" id="inf-bar-chart"></div>
+        <button class="inf-try-again" id="inf-try-again">Try Again</button>
+      </div>
+
+    </section>
+
+  </div><!-- /viewport -->
+
+  <!-- Blog text panel (right side, markdown-driven) -->
+  <button class="blog-trigger" id="blog-toggle" aria-label="Toggle story panel" aria-expanded="true">
+    <span class="blog-trigger-label">Story</span>
+  </button>
+
+  <aside class="blog-panel open" id="blog-panel" aria-hidden="false">
+    <div class="blog-panel-inner">
+      <header class="blog-header">
+        <div class="blog-header-left">
+          <div class="blog-eyebrow" id="blog-eyebrow">Phase story</div>
+          <h2 class="blog-title" id="blog-title">Parser story</h2>
+        </div>
+        <div class="blog-header-right">
+          <button class="blog-close" id="blog-close-btn" aria-label="Close story panel">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </div>
+      </header>
+
+      <div class="blog-md-shell">
+        <div class="blog-md-scroll" id="blog-content">
+          <!-- JS loads markdown content for current phase -->
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Detail panel -->
+  <div class="panel" id="panel">
+    <div class="panel-bar" id="panel-bar">
+      <div class="panel-grip"></div>
+      <span class="panel-bar-hint" id="panel-bar-hint">Click a node to inspect</span>
+    </div>
+    <div class="panel-body" id="panel-body">
+      <p class="panel-hint">Click any node to inspect it</p>
+    </div>
+  </div>
+
+  <!-- Blog content — inline markdown, parsed by renderMarkdownToHtml() in app.js -->
+  <script type="text/plain" id="blog-md-parser">
+# What is this website?
+
+How does a machine look at a cat photo and know it's a cat? (Or fail to, because yes, they fail sometimes.) That question is exactly why I built this. I want to show you how a neural network actually works underneath, no hand-waving, no magic. I'm going to explain it from scratch using a real model called **MobileNetV2**, made by Google to identify images.
+
+**Why MobileNetV2?** Because it's tiny. Most powerful models are gigabytes and need serious hardware. MobileNetV2 was designed to run on phones, so it's small enough to run in a browser, which is exactly what we're doing here. It's not the most accurate thing in the world, but it does a solid job and it's perfect for learning.
+
+This first page covers the basics and parsing. The next page (hit **Inference** in the top right) covers actually running the model.
+
+Let's dive in.
+
+## What is a neural network?
+
+You can find a hundred explanations online. I'll give you the one that worked for me: not too deep, but not shallow either.
+
+Think of brain neurons. Lots of small nodes connected to each other, sending signals back and forth. A neural network is the same idea, except we built it, and instead of biological signals it does **math**. That's it. Nodes connected in order, doing math, producing a result.
+
+Since MobileNetV2 is built for images, it takes an image as input, turns it into numbers, passes those numbers through all its nodes doing math, and spits out a result at the end. That result is a probability: *is this 98% cat? 15% dog? 0.05% plane?* It's probably a cat.
+
+So how do we turn an image into numbers?
+
+### Images are just pixels
+
+Every image is made of pixels, tiny squares arranged in a grid. Take a 7×7 image: 49 pixels, 7 rows, 7 columns. But pixels aren't all the same. Each one has a color, and every color can be described mathematically using **RGB** (red, green, blue). Mix those three in different amounts and you get any color. Your monitor works this exact way.
+
+We represent each channel on a scale from **0 to 255**. So a pixel isn't one number, it's three. One for red, one for green, one for blue.
+
+That means our 7×7 image is actually **7 × 7 × 3 = 147 numbers**.
+
+> This block of numbers, a multi-dimensional array, is called a **tensor**. Fancy word, simple idea.
+
+### What the computer actually sees
+
+Take that weird shape from above. Each pixel becomes three numbers: black pixels become `[0, 0, 0]`, coral red becomes `[230, 90, 75]`, gold becomes `[230, 195, 90]`, cyan becomes `[115, 210, 195]`. The result is three separate 7×7 grids stacked on top of each other, one per color channel. No shapes, no colors. Just numbers.
+
+MobileNetV2 expects images at **224×224**, so instead of 147 numbers you're feeding it:
+
+```
+224 × 224 × 3 = 150,528 numbers
+```
+
+All from one image. That's why neural networks need to be fast.
+
+### Layers
+
+Those nodes we mentioned are organized into **layers**:
+
+| Layer | Role |
+|-------|------|
+| **Input layer** | Receives the image tensor |
+| **Hidden layers** | Do the heavy math, one after another |
+| **Output layer** | Produces the final answer |
+
+Each layer takes the output of the previous one, does its own math on it, and passes the result forward. Data flows in one direction, left to right, until an answer comes out.
+
+## What's actually happening inside?
+
+The main operation in every layer is **matrix multiplication**. Sounds scary. It isn't.
+
+Say a layer has 3 numbers coming in. The layer also has its own set of numbers called **weights**. To compute the output, you multiply each input by its matching weight and add everything up:
+
+```
+input:   [2,   3,   1  ]
+weights: [0.5, 0.8, 0.2]
+
+(2 × 0.5) + (3 × 0.8) + (1 × 0.2) = 1.0 + 2.4 + 0.2 = 3.6
+```
+
+One output number. Now imagine doing this hundreds of thousands of times with larger tensors. That's MobileNetV2. Each layer multiplies the incoming tensor by its weights, passes the result to the next layer, repeat.
+
+### The output
+
+The final layer produces **1000 numbers**, one score per category (cat, dog, plane, banana, you name it). Raw scores are hard to read, so we pass them through **softmax**, which converts them into percentages that add up to 100%:
+
+> *"91% cat, 6% fox, 1% dog"*. The model says: cat.
+
+### Where do the weights come from?
+
+Weights are the numbers the model *learned* during training. Someone fed it millions of labeled images and the model slowly adjusted its weights, step by step, until it got good at telling things apart. Think of it like a baby learning: starts with random guesses, gets corrected, improves over time. Millions of iterations.
+
+We don't train it. We just use the weights that are already learned.
+
+So now you know three things:
+
+1. **Input**: a tensor (image as numbers)
+2. **Math**: matrix multiplication (inputs × weights, summed up)
+3. **Weights**: learned numbers, stored in a file
+
+That file is what we need to parse.
+
+## What is parsing and why do we need it?
+
+When someone trains a model like MobileNetV2, everything gets saved to a file: the layers, the order they run, and all the weights. In our case that's an **`.onnx` file**. ONNX stands for *Open Neural Network Exchange*, a standard format for saving and sharing trained models across different tools.
+
+Think of it like a ZIP file for a neural network. It has everything. It's a manual.
+
+The problem: it's written in binary. You can't open it in a text editor and read it. Parsing is the act of **reading that file and making sense of it**, pulling out the structure (what layers exist, in what order) and the weights (the numbers each layer uses to do its math). Without parsing, it's just a blob of bytes that means nothing.
+
+> It's like receiving a manual written in a language you don't speak. Before you can follow it, you have to translate it.
+
+And here's the part I'm proud of: **I wrote the parser myself**. No library that does it all for us. We read the ONNX file directly, pull out the layers and weights, and build the whole map from scratch.
+
+## The parser
+
+So how do we actually read a binary ONNX file?
+
+When you download the `.onnx` file, you also get a **`.proto` file**, short for Protocol Buffers, a format made by Google. The ONNX file is packed in a specific binary layout and the proto file is the spec that tells you how to unpack it: *"the first bytes are the model name, then here are the layers, then here are the weights."*
+
+> The proto file is the dictionary. The ONNX file is the book written in that language. Use the dictionary to read the book.
+
+Once parsed, you get a structured object containing:
+
+- **What layers the model has** (convolution, batch norm, relu, etc. Those are the colored nodes in the graph)
+- **What order they run in**
+- **The input/output size of each layer** (e.g. `[1, 3, 224, 224]` for the image input)
+- **The weight values for each layer**
+
+We loop through every layer, read its type, grab its weights, and store everything in our own data structure. That's the parser: read, understand, map.
+
+## The graph you're looking at
+
+We already ran the parser. The graph on the left is the result: all 100 nodes of MobileNetV2, in order. Click any node to inspect its inputs, outputs, weights, and attributes.
+
+The colors tell you what kind of operation each node is:
+
+| Color | Operation | What it does |
+|-------|-----------|--------------|
+| Blue | **Convolution** | Slides a small window across the image looking for patterns: edges, corners, curves. Early layers catch simple things like lines. Later ones detect eyes, wheels, faces. |
+| Green | **Activation** | A signal gate. Decides which values to keep and which to zero out. Without this, the whole network collapses to one giant linear equation and fails at anything complex. |
+| Red | **Residual (Add)** | Adds the layer's input directly to its output. A clever bypass: even if a layer makes a mistake, the original signal still passes through. Think of it as a backup lane on a highway. |
+| Purple | **Gemm** | The final classifier: one big matrix multiply to turn the learned features into 1000 category scores. |
+
+There are more types, hover or click to explore them.
+
+### The order matters
+
+You might wonder: *can I run all the Conv layers first, then the activations?* No. The order in the graph is the only correct order. Each node's output is the next node's input. You follow the chain from left to right, node by node, until you reach the end and get your answer. The researchers who trained the model determined this order. It's baked in.
+
+We now have a human-readable map of MobileNetV2. The structure is clear, the weights are loaded, and every operation is accounted for.
+
+**Hit Inference →** to see the model actually run.
+  </script>
+
+  <script type="text/plain" id="blog-md-inference">
+# Now watch it think
+
+The parser gave us a map. Now we run it.
+
+Upload an image, hit Run, and the model will walk through all 100 operations one by one, slow enough that you can actually see what's happening at each step. No black box. The real math, live, in front of you.
+
+Let's trace exactly what happens from the moment you hit Run to the moment you get an answer.
+
+## Step 0: Preprocessing
+
+Before the model touches your image, we need to prepare it. Models are picky. MobileNetV2 was trained on images that were exactly **224×224 pixels**, so no matter what size your photo is, we resize it to that exact square first.
+
+But resizing isn't enough. We also need to **normalize** the pixel values, and this part is worth understanding because it trips people up.
+
+Raw pixels are numbers between 0 and 255. That's how every screen on the planet stores color. But the model wasn't trained on raw pixel values. During training, the researchers converted every pixel to a range of roughly **-1 to +1**, because numbers in that range are better behaved mathematically. (Big numbers like 255 cause issues during training. Smaller, centered numbers keep the math stable.) So we do the same thing here:
+
+```
+normalized = (pixel / 127.5) - 1
+```
+
+Let's work through a couple examples. A completely black pixel has value 0. Plug that in: `(0 / 127.5) - 1 = -1`. A white pixel is 255: `(255 / 127.5) - 1 = 1`. A medium gray is 128: `(128 / 127.5) - 1 ≈ 0`. Everything maps to somewhere between -1 and +1.
+
+After this, we have a tensor with shape `[1, 3, 224, 224]`. That first `1` means one image. The `3` means three color channels (red, green, blue). Then 224 rows and 224 columns. Multiply it out: **150,528 numbers**. That's your image. That's what goes into the model.
+
+## The 100 operations
+
+MobileNetV2 has exactly 100 operations. Not all of them are the same kind. Four types do the vast majority of the work, and they each have a very specific job. Let's go through them.
+
+### Convolution (52 nodes)
+
+This is the workhorse. More than half the nodes in the network are convolutions.
+
+Here's what a convolution does. Imagine you have a tiny magnifying glass, 3 pixels wide and 3 pixels tall. You place it on the top-left corner of the image. Under that magnifying glass are 9 pixel values. The model also has a **filter**: 9 numbers that it learned during training. You multiply each pixel by the matching filter number, add it all up, and you get a single output number.
+
+```
+filter:    [0.1,  0.8, -0.3]
+           [0.5, -0.2,  0.9]
+           [0.0,  0.4,  0.2]
+
+patch:     [120, 140,  90]   <- pixel values at this position
+           [110, 200, 150]
+           [ 80,  90, 160]
+
+result:    (0.1×120) + (0.8×140) + (-0.3×90) + ...
+```
+
+Now slide the magnifying glass one pixel to the right and do it again. Then one more pixel. Keep going until you've covered the entire image. You end up with a whole new grid of numbers, one output value for every position you visited. That new grid is called an **output map** or **feature map**.
+
+What does this output map represent? It depends on the filter. If the filter's numbers happen to be arranged so that they respond strongly to horizontal edges, then the output map will light up wherever horizontal edges appear in your image. A different filter might respond to diagonal lines. Another to color transitions. Each filter is a different question being asked of the image.
+
+One convolution layer doesn't run just one filter. It runs many. 32. 96. Even 320 of them at the same time. Each produces its own output map. Stack all those maps together and you have a rich description of what's in the image at that layer.
+
+### What happens across all 52 convolutions
+
+Here's what happens to the data as it moves through the network. This is important.
+
+It starts at **224×224 pixels**, a grid of 224 rows and 224 columns. Each position in that grid is one pixel. There are 3 channels (red, green, blue). So the starting shape is **224 × 224 × 3**.
+
+As the data passes through each convolution layer, the network deliberately shrinks the width and height while growing the number of channels. Here's a rough progression:
+
+| Stage | Width × Height | Channels | What's happening |
+|-------|---------------|----------|-----------------|
+| Input | 224 × 224 | 3 | Raw pixel colors: red, green, blue |
+| Early layers | 112 × 112 | 32 | Basic edges and color patches detected |
+| Middle layers | 28 × 28 | 96 | Combinations of edges forming shapes and textures |
+| Later layers | 14 × 14 | 320 | Recognizable parts: fur, wheels, eyes |
+| Final conv | 7 × 7 | 1280 | High-level concepts: "has a face", "is metallic" |
+
+Think of it this way. The early layers are zoomed in. They look at tiny patches of the image and ask *"is there a horizontal edge here? a colour transition?"* They don't know what the image is yet. They just catalog raw details, like a scanner going pixel by pixel.
+
+By the middle layers, the network is combining those raw edge detections into bigger patterns. *"These edges together form a curve. This texture looks like fur."* It no longer cares exactly where pixel 47,83 is. It cares about structure.
+
+By the final layers, the spatial grid is just 7×7. That's 49 positions, each covering a large chunk of the original image. But there are now 1280 channels, each one a different learned "question" the network is asking about that chunk. Things like *"does this region look like an eye?"* or *"is there a smooth curved surface here?"* or *"does this match the texture of an animal?"*
+
+So when we say the resolution shrinks from 224×224 to 7×7, it isn't losing information. It's **compressing** it. The exact pixel positions matter less and less. What matters more and more is what was *found* at those positions. Three color channels at the start become 1280 richer, more abstract descriptions of what the image contains.
+
+That's the trade: **spatial precision for semantic depth**. The network gradually forgets where every pixel was and remembers what everything meant.
+
+> You can't make a single filter that detects "cat" directly. But stack enough filters and eventually one fires on whiskers, another on pointy ears, another on a nose, and the combination becomes "cat."
+
+### Why MobileNetV2 is fast: depthwise convolution
+
+Here's the thing about convolutions: they're expensive. If you did them the naive way, this model would be way too slow for a browser. MobileNetV2 has a trick, and it's the whole reason this app exists.
+
+**The expensive way.** Say a layer has 32 input channels and you want to produce 64 output channels. In a standard convolution, every output channel has its own 3×3 filter, but that filter has to look at *all 32 input channels at once*. So each filter is actually 3 × 3 × 32 = 288 numbers. You need 64 of these filters. That's 64 × 288 = **18,432** learned numbers, and you have to apply them at every position across the image. For a 28×28 grid, that's roughly **14.4 million multiplications**. For one layer. And there are 52 convolution layers.
+
+That's fine on a data centre GPU. It's not fine in your browser.
+
+**The MobileNetV2 way.** Split the work into two smaller steps.
+
+**Step 1: Depthwise.** Instead of one big filter that sees all 32 channels, run 32 tiny separate filters, one per channel. Each filter only looks at its own channel. It does the spatial work (finding edges, patterns, transitions in that channel's data) but never combines information across channels. 32 channels in, 32 output maps out. Very cheap.
+
+**Step 2: Pointwise.** Now combine the channels, but use the smallest possible filter: just 1×1. No spatial work at all. At each pixel position, look at all 32 channel values and combine them into 64 new values. This is where cross-channel information gets mixed.
+
+The insight is that **spatial filtering** (looking at neighbouring pixels) and **channel mixing** (combining information across channels) are two separate jobs. A standard convolution does both at once, which is expensive. MobileNetV2 does them one at a time, which is much cheaper.
+
+How much cheaper? For that same 32→64 channel layer on a 28×28 image:
+
+| Approach | Multiplications | Relative cost |
+|----------|----------------|---------------|
+| Standard convolution | ~14.4 million | 1× |
+| Depthwise + pointwise | ~2.1 million | **~7× cheaper** |
+
+Across the whole network, this adds up to **8 to 9 times fewer operations** than a standard model of similar quality. That's the entire reason we can run a real neural network in a browser tab, with no server and no GPU.
+
+Does quality suffer? Barely. The pointwise step immediately re-mixes all the channels after the depthwise step, so the network still learns which channel combinations matter. The Google researchers who designed this found the accuracy drop was only a few percentage points compared to a full-size model. For a 7 to 9x speed improvement, that's an incredible deal.
+
+### Clip / ReLU6 (35 nodes)
+
+After every convolution, the output values can be anything. Positive, negative, very large, very small. Left unchecked, this causes a real problem.
+
+Here's why. If one layer outputs a value of, say, 50, and the next layer multiplies that by its weights, you might get 500. The next layer turns that into 5,000. Then 50,000. Values snowball. By the time you're halfway through the network, you're dealing with numbers so large that the math breaks down. Computers store decimal numbers with limited precision, and extremely large or small values lose accuracy. The model's predictions become garbage.
+
+The fix is simple: after every convolution, clamp the output values to a fixed range. In MobileNetV2, that range is **0 to 6**:
+
+```
+input:  -3.7  →  output: 0     (negative? floor to 0)
+input:   2.1  →  output: 2.1   (in range? leave it alone)
+input:   8.4  →  output: 6     (too big? cap at 6)
+input:   0.0  →  output: 0     (zero stays zero)
+```
+
+This operation is called **ReLU6**. ReLU stands for "Rectified Linear Unit," which is just a fancy name for "floor negative values to zero." The "6" part means we also cap at 6 from above.
+
+Why 6 specifically and not 10 or 100? It comes down to how this model is designed to run on phones. When you compress a model for mobile devices, you often convert its numbers from high-precision (32-bit floating point) to low-precision (8-bit integer). A tight range like 0 to 6 converts cleanly without losing much accuracy. A range of 0 to 1,000 would lose a lot of detail in that conversion.
+
+So these Clip nodes are doing two things. They prevent values from exploding through the network, and they keep everything in a range that works well for mobile hardware. They show up 35 times because they appear after almost every convolution. Brakes on every straightaway.
+
+### Add / Residual (10 nodes)
+
+These are the **skip connections**, and they solve one of the hardest problems in deep learning.
+
+Imagine stacking 50 or 100 layers. Data flows in at one end and out at the other. Every layer does some math and passes its output to the next. Sounds straightforward. But there's a catch.
+
+During training, the model learns by adjusting its weights. It does this through a process called **backpropagation**: after making a prediction, it measures how wrong it was, then sends a correction signal backwards through the network. Each layer receives this signal and adjusts its weights accordingly. The problem is that each time the signal passes through a layer going backwards, it gets a little smaller. By the time it reaches the first few layers of a deep network, it's essentially zero. Those early layers never learn anything useful. This is called the **vanishing gradient problem**, and for years it made very deep networks impossible to train.
+
+Skip connections fix this. Instead of forcing data through every single layer in sequence, a skip connection creates a shortcut:
+
+```
+block input tensor  +  block output tensor  =  new tensor
+```
+
+The input to a block gets added directly to its output. If the block's layers learned nothing useful, that's fine. The original signal passes through untouched. If they did learn something, the output is the original plus whatever improvements the block made.
+
+For training, this is critical. The correction signal now has a direct highway back through the network, skipping over blocks entirely. It doesn't fade to nothing because it doesn't have to pass through every single layer. It can reach the first layers in the network almost as strong as it left the last ones.
+
+Without skip connections, MobileNetV2's 100 operations would be impossible to train. The early layers would never learn to detect edges, and the whole thing would fall apart.
+
+If you look at the graph on the parser page, the Add nodes always appear at the end of a block, reconnecting back to where that block started. They're the safety net of the network.
+
+### ReduceMean: Global Average Pooling (1 node)
+
+At this point, after all the convolutions, clips, and skip connections, we have a tensor shaped `[1, 1280, 7, 7]`. That's 1280 feature maps, each one a 7×7 grid.
+
+This is where something important happens. The network decides it's done looking at spatial information. It doesn't care *where* in the image something was found anymore. It only cares *what* was found, across the entire image, overall.
+
+ReduceMean does exactly what it sounds like: for each of the 1280 channels, it computes the **mean** (average) of all 49 values in that 7×7 grid and keeps just that single number.
+
+```
+1280 channels × 7 × 7 = 62,720 values
+              ↓
+        1280 averages
+```
+
+Before this step, the network could say *"there's something that looks like an eye in the top-left region."* After this step, it can only say *"somewhere in this image, there are strong eye-like features."* The location is gone. Only the summary remains.
+
+Why throw away location? Because for classification, location doesn't matter. A cat in the top-left corner of a photo is the same cat as one in the bottom-right. The network needs to be **location-invariant**: its answer shouldn't change just because you shifted the subject a few pixels.
+
+The result is a vector of 1280 numbers. Think of it as the image's fingerprint. Everything the network learned about your image, compressed into 1280 values.
+
+### Reshape (1 node)
+
+This one is pure housekeeping. The tensor at this point is technically shaped `[1, 1280, 1, 1]` because it still has the spatial dimensions from before, they're just 1×1 now. Reshape squishes it to `[1, 1280]`, dropping those trailing dimensions so the next operation works cleanly. No math happens here. The numbers don't change. It's just reorganizing the container.
+
+### Gemm: The Final Classifier (1 node)
+
+This is the last real computation. Everything has been building to this.
+
+We have a vector of **1280 numbers**, the image's fingerprint. Now we need to compare it against 1000 categories and ask: which one does this image look most like?
+
+The model has a weight matrix of size **1000 × 1280**. That's 1000 rows, one per category (cat, dog, plane, banana, volcano, and 995 more). Each row is itself a vector of 1280 numbers that the model learned during training. Think of each row as a **template**: what the image fingerprint *should* look like for that category.
+
+The operation is a matrix multiplication:
+
+```
+image fingerprint:  [1, 1280]
+weight matrix:      [1000, 1280]
+result:             [1, 1000]
+```
+
+For each of the 1000 categories, the model computes a **dot product** between the image fingerprint and that category's template. A dot product is the same multiply-and-add operation from the parser blog: multiply matching positions, sum it all up. The result is a single number.
+
+If the image fingerprint is very similar to the "cat" template, the dot product for cat will be a large positive number. If it looks nothing like the "banana" template, the dot product for banana will be small or negative.
+
+You get 1000 raw scores. These are called **logits**. They're not probabilities yet. A logit of 8.3 for "cat" and 2.1 for "dog" means cat scored higher, but those numbers don't tell you *how much* more confident the model is. For that, we need one more step.
+
+## The final answer
+
+We have 1000 logits. We need probabilities. Enter **softmax**.
+
+Softmax does something clever. It takes every logit, raises a special number called **e** (approximately 2.718, a mathematical constant, like pi) to the power of that logit, and then divides by the total of all those results:
+
+```
+probability of class i = e^(logit_i) / sum of e^(logit) for all 1000 classes
+```
+
+Why use `e` raised to a power? Because it amplifies differences. If cat's logit is 8.3 and dog's is 2.1, the raw difference is only 6.2. But `e^8.3` is about 4,023 while `e^2.1` is about 8.2. That's a 490× difference. Softmax turns small score gaps into very confident probabilities.
+
+After softmax, all 1000 values are between 0 and 1, and they add up to exactly 1. You have a proper probability distribution. The model might say:
+
+> "94% tabby cat, 3% Egyptian cat, 1% tiger cat, 0.5% lynx ..."
+
+The top result is the answer.
+
+That's inference. 100 operations. Your image went in as 150,528 pixel values. It came out as a probability over 1,000 categories. Every step along the way was a specific, traceable mathematical operation.
+
+## What you're seeing on this page
+
+When you run the walkthrough, you're watching real computations on your actual image. This isn't a simulation or a pre-recorded demo. The code runs the actual operations on the actual tensor data from your photo, step by step, using the same math the real model uses.
+
+The visualizations are sampled (we can't draw all 62,720 values on one screen), but the underlying numbers are real. The first convolution processes 150,528 input values. The last softmax produces a probability over 1,000 categories. Everything in between is the path between those two points.
+
+No magic. Just math. 100 steps of it.
+  </script>
+
+  <script src="inference.js"></script>
+  <script src="wasm-bridge.js"></script>
+  <script src="engine.js"></script>
+  <script src="inference-renderers.js"></script>
+  <script src="inference-ui.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,767 @@
+/* ═══════════════════════════════════════════════════════
+   TinyForge — inference-style.css  (Liquid Glass edition)
+
+   Self-contained dark cinematic theme for the inference
+   screen. Always dark regardless of global theme.
+   Three states: Hero → Walkthrough → Results
+   ═══════════════════════════════════════════════════════ */
+
+/* ── Design tokens ───────────────────────────────────── */
+
+#screen-inference {
+  --inf-bg:           #060610;
+  --inf-bg-2:         #0c0c1e;
+  --inf-surface:      rgba(255,255,255,0.06);
+  --inf-surface-2:    rgba(255,255,255,0.04);
+  --inf-border:       rgba(255,255,255,0.08);
+  --inf-border-hi:    rgba(255,255,255,0.16);
+  --inf-text:         #e8e8f0;
+  --inf-text-dim:     rgba(232,232,240,0.40);
+  --inf-text-muted:   rgba(232,232,240,0.20);
+  --inf-text-ghost:   rgba(232,232,240,0.10);
+
+  --inf-glass:        rgba(255,255,255,0.06);
+  --inf-glass-blur:   blur(40px) saturate(1.8);
+
+  /* op-type accent colors */
+  --inf-conv:         #60A5FA;
+  --inf-clip:         #34D399;
+  --inf-add:          #F87171;
+  --inf-gemm:         #C084FC;
+  --inf-reduce:       #FBD34D;
+  --inf-reshape:      #94A3B8;
+  --inf-default:      #94A3B8;
+
+  /* current op accent (updated by JS) */
+  --inf-accent:       #60A5FA;
+
+  /* fonts */
+  --inf-font-display: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --inf-font-mono:    'JetBrains Mono', monospace;
+
+  /* easing */
+  --inf-ease:         cubic-bezier(0.22, 1, 0.36, 1);
+  --inf-ease-spring:  cubic-bezier(0.34, 1.56, 0.64, 1);
+  --inf-ease-in:      cubic-bezier(0.64, 0, 0.78, 0);
+}
+
+/* ── Base screen ─────────────────────────────────────── */
+
+#screen-inference {
+  background: radial-gradient(ellipse 120% 80% at 50% 0%, #0e0e28 0%, #060610 60%);
+  color: var(--inf-text);
+  overflow: hidden;
+}
+
+/* ── Transitions between states ─────────────────────── */
+
+.inf-hero,
+.inf-walkthrough,
+.inf-results-screen {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.4s var(--inf-ease), transform 0.4s var(--inf-ease);
+}
+
+.inf-hero[hidden],
+.inf-walkthrough[hidden],
+.inf-results-screen[hidden] {
+  display: none;
+}
+
+/* Fade in from below */
+.inf-state-enter {
+  opacity: 0;
+  transform: translateY(20px);
+}
+.inf-state-exit {
+  opacity: 0;
+  transform: translateY(-20px);
+  pointer-events: none;
+}
+
+/* ══════════════════════════════════════════════════════
+   STATE 1 — HERO UPLOAD
+   ══════════════════════════════════════════════════════ */
+
+.inf-hero {
+  padding: 40px 24px;
+}
+
+.inf-hero-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 22px;
+  width: 100%;
+  max-width: 520px;
+}
+
+.inf-hero-title {
+  font-family: var(--inf-font-display);
+  font-size: clamp(32px, 5vw, 52px);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  color: var(--inf-text);
+  margin: 0;
+  text-align: center;
+  line-height: 1.05;
+}
+
+.inf-hero-sub {
+  font-family: var(--inf-font-display);
+  font-size: 15px;
+  font-weight: 400;
+  color: var(--inf-text-dim);
+  margin: 0;
+  text-align: center;
+  line-height: 1.65;
+  max-width: 380px;
+  letter-spacing: -0.01em;
+}
+
+/* Drop zone */
+.inf-drop-zone {
+  width: 100%;
+  max-width: 420px;
+  min-height: 200px;
+  border: 1px solid var(--inf-border-hi);
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  position: relative;
+  background: var(--inf-glass);
+  backdrop-filter: var(--inf-glass-blur);
+  -webkit-backdrop-filter: var(--inf-glass-blur);
+  transition: border-color 0.3s, background 0.3s, box-shadow 0.3s;
+  overflow: hidden;
+}
+
+.inf-drop-zone:hover,
+.inf-drop-zone.drag-over {
+  border-color: var(--inf-accent);
+  background: rgba(96, 165, 250, 0.07);
+  box-shadow: 0 0 0 1px var(--inf-accent),
+              0 0 40px rgba(96, 165, 250, 0.12),
+              inset 0 0 24px rgba(96, 165, 250, 0.06);
+}
+
+.inf-drop-zone.has-image {
+  border-style: solid;
+  border-color: var(--inf-border);
+  min-height: 240px;
+}
+
+.inf-drop-prompt {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 13px;
+  padding: 44px 24px;
+  color: var(--inf-text-muted);
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+
+.inf-drop-prompt.hidden {
+  opacity: 0;
+  position: absolute;
+}
+
+.inf-drop-prompt svg {
+  opacity: 0.4;
+}
+
+.inf-drop-prompt-text {
+  font-family: var(--inf-font-display);
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--inf-text-dim);
+  text-align: center;
+  letter-spacing: -0.01em;
+}
+
+.inf-drop-prompt-hint {
+  font-family: var(--inf-font-mono);
+  font-size: 11px;
+  color: var(--inf-text-muted);
+  letter-spacing: 0.05em;
+}
+
+/* Preview image inside drop zone */
+.inf-preview {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border-radius: 19px;
+}
+
+.inf-preview[hidden] {
+  display: none;
+}
+
+/* Run button */
+.inf-run-btn {
+  font-family: var(--inf-font-display);
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--inf-bg);
+  background: var(--inf-text);
+  border: none;
+  border-radius: 14px;
+  padding: 14px 52px;
+  cursor: pointer;
+  transition: opacity 0.3s, transform 0.3s var(--inf-ease-spring),
+              background 0.3s, box-shadow 0.3s;
+  outline: none;
+  box-shadow: 0 4px 20px rgba(232,232,240,0.15);
+}
+
+.inf-run-btn:hover:not(:disabled) {
+  background: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(232,232,240,0.20);
+}
+
+.inf-run-btn:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.inf-run-btn:disabled {
+  opacity: 0.22;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ══════════════════════════════════════════════════════
+   STATE 2 — WALKTHROUGH
+   ══════════════════════════════════════════════════════ */
+
+.inf-walkthrough {
+  flex-direction: column;
+  padding: 0;
+  justify-content: flex-start;
+}
+
+/* Thin progress rail at very top */
+.inf-progress-rail {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: rgba(255,255,255,0.06);
+  z-index: 10;
+  border-radius: 0 0 2px 2px;
+}
+
+.inf-progress-fill {
+  height: 100%;
+  width: 0%;
+  background: var(--inf-accent);
+  transition: width 0.3s linear, background 0.6s var(--inf-ease);
+  box-shadow: 0 0 10px color-mix(in srgb, var(--inf-accent) 60%, transparent);
+  border-radius: 0 2px 2px 0;
+}
+
+/* Atmospheric tint overlay */
+.inf-tint {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background: radial-gradient(
+    ellipse 80% 60% at 50% 40%,
+    var(--inf-accent),
+    transparent 70%
+  );
+  opacity: 0.05;
+  transition: opacity 0.8s var(--inf-ease), background 0.8s var(--inf-ease);
+}
+
+/* Main stage content */
+.inf-stage {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  width: 100%;
+  padding: 16px 24px 108px;
+  gap: 10px;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+/* Node counter */
+.inf-node-counter {
+  font-family: var(--inf-font-mono);
+  font-size: 11px;
+  color: var(--inf-text-muted);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* Op name — big, colorful, atmospheric */
+.inf-op-name {
+  font-family: var(--inf-font-display);
+  font-size: clamp(28px, 4vw, 44px);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--inf-accent);
+  transition: color 0.5s var(--inf-ease);
+  line-height: 1.0;
+  text-align: center;
+}
+
+/* Human-readable op description */
+.inf-op-desc {
+  font-family: var(--inf-font-display);
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--inf-text-dim);
+  text-align: center;
+  letter-spacing: -0.01em;
+}
+
+/* Shape info in monospace */
+.inf-shape-info {
+  font-family: var(--inf-font-mono);
+  font-size: 12px;
+  color: var(--inf-text-muted);
+  letter-spacing: 0.04em;
+  text-align: center;
+}
+
+/* Node annotation */
+.inf-annotation {
+  font-family: var(--inf-font-display);
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--inf-text-dim);
+  max-width: 560px;
+  text-align: center;
+  line-height: 1.65;
+  padding: 12px 18px;
+  background: var(--inf-glass);
+  backdrop-filter: var(--inf-glass-blur);
+  -webkit-backdrop-filter: var(--inf-glass-blur);
+  border-radius: 14px;
+  border: 1px solid var(--inf-border);
+  display: none;
+  letter-spacing: -0.01em;
+}
+
+.inf-annotation.visible {
+  display: block;
+}
+
+/* Canvas wrapper */
+.inf-canvas-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 6px;
+}
+
+#inf-main-canvas {
+  display: block;
+  max-width: min(800px, 100%);
+  max-height: 420px;
+  width: auto;
+  height: auto;
+  border-radius: 16px;
+  box-shadow: 0 0 0 1px var(--inf-border), 0 0 48px rgba(0,0,0,0.45);
+  image-rendering: pixelated;
+}
+
+/* Glow ring on canvas matching op color */
+.inf-canvas-glow {
+  position: absolute;
+  inset: -1px;
+  border-radius: 17px;
+  border: 1px solid var(--inf-accent);
+  opacity: 0.3;
+  pointer-events: none;
+  transition: border-color 0.5s var(--inf-ease);
+}
+
+/* Controls bar — bottom fixed, glassmorphism */
+.inf-controls {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 16px 28px;
+  background: rgba(6, 6, 16, 0.75);
+  backdrop-filter: blur(40px) saturate(1.8);
+  -webkit-backdrop-filter: blur(40px) saturate(1.8);
+  border-top: 1px solid var(--inf-border);
+}
+
+.inf-ctrl-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--inf-border);
+  border-radius: 12px;
+  background: var(--inf-glass);
+  backdrop-filter: var(--inf-glass-blur);
+  -webkit-backdrop-filter: var(--inf-glass-blur);
+  color: var(--inf-text-dim);
+  cursor: pointer;
+  transition: border-color 0.3s, color 0.3s, background 0.3s,
+              transform 0.3s var(--inf-ease-spring);
+  outline: none;
+  flex-shrink: 0;
+  will-change: transform;
+}
+
+.inf-ctrl-btn:hover {
+  border-color: var(--inf-border-hi);
+  color: var(--inf-text);
+  background: rgba(255,255,255,0.10);
+  transform: scale(1.06);
+}
+
+.inf-ctrl-btn.playing {
+  border-color: var(--inf-accent);
+  color: var(--inf-accent);
+}
+
+/* Speed control */
+.inf-speed-control {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.inf-speed-label {
+  font-family: var(--inf-font-mono);
+  font-size: 10px;
+  color: var(--inf-text-muted);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.inf-speed-val {
+  font-family: var(--inf-font-mono);
+  font-size: 11px;
+  color: var(--inf-text-dim);
+  min-width: 28px;
+}
+
+/* Speed range input */
+.inf-speed-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100px;
+  height: 3px;
+  border-radius: 99px;
+  background: var(--inf-border-hi);
+  outline: none;
+  cursor: pointer;
+}
+
+.inf-speed-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--inf-accent);
+  cursor: pointer;
+  transition: background 0.3s, transform 0.3s;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
+.inf-speed-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.15);
+}
+
+.inf-speed-slider::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border: none;
+  border-radius: 50%;
+  background: var(--inf-accent);
+  cursor: pointer;
+}
+
+/* ══════════════════════════════════════════════════════
+   STATE 3 — RESULTS
+   ══════════════════════════════════════════════════════ */
+
+.inf-results-screen {
+  padding: 40px 24px 48px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+}
+
+/* Inner wrapper — max-width column, everything stacked */
+.inf-results-screen > * {
+  width: 100%;
+  max-width: 480px;
+}
+
+.inf-results-title {
+  font-family: var(--inf-font-display);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--inf-text-muted);
+  margin: 0 0 28px;
+  text-align: center;
+}
+
+.inf-results-time {
+  font-family: var(--inf-font-mono);
+  font-size: 10px;
+  color: var(--inf-text-ghost);
+  text-align: center;
+  letter-spacing: 0.06em;
+  margin: -20px 0 28px;
+  display: none; /* shown via JS if needed */
+}
+
+/* Bar chart container */
+.inf-bar-chart {
+  width: 100%;
+  max-width: 480px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* First row — winner card, visually dominant */
+.inf-bar-row:first-child {
+  background: linear-gradient(135deg,
+    color-mix(in srgb, var(--inf-accent) 12%, transparent),
+    color-mix(in srgb, var(--inf-accent) 4%, transparent)
+  );
+  border: 1px solid color-mix(in srgb, var(--inf-accent) 30%, transparent);
+  border-radius: 18px;
+  padding: 18px 20px;
+  margin-bottom: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* All other rows — compact, clean */
+.inf-bar-row {
+  display: grid;
+  grid-template-columns: 1fr 180px 44px;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid transparent;
+  transition: background 0.25s, border-color 0.25s;
+}
+
+.inf-bar-row:hover {
+  background: rgba(255,255,255,0.06);
+  border-color: var(--inf-border);
+}
+
+/* Winner row overrides the grid layout — full-width stacked */
+.inf-bar-row:first-child .inf-bar-label {
+  font-size: clamp(20px, 3vw, 28px);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--inf-text);
+  text-align: left;
+  white-space: normal;
+  overflow: visible;
+  text-overflow: unset;
+  line-height: 1.15;
+}
+
+.inf-bar-row:first-child .inf-bar-track {
+  height: 6px;
+  border-radius: 99px;
+  background: rgba(255,255,255,0.08);
+  overflow: hidden;
+}
+
+.inf-bar-row:first-child .inf-bar-fill {
+  height: 100%;
+  border-radius: 99px;
+  background: var(--inf-accent);
+  box-shadow: 0 0 14px color-mix(in srgb, var(--inf-accent) 60%, transparent);
+  transition: width 1s var(--inf-ease);
+}
+
+.inf-bar-row:first-child .inf-bar-pct {
+  font-family: var(--inf-font-display);
+  font-size: 42px;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  color: var(--inf-accent);
+  text-align: right;
+  line-height: 1;
+  align-self: center;
+}
+
+/* Winner row: label + pct side by side at top, track full-width below */
+.inf-bar-row:first-child {
+  grid-template-columns: 1fr auto;
+  grid-template-rows: auto auto;
+  grid-template-areas:
+    "label pct"
+    "track track";
+}
+.inf-bar-row:first-child .inf-bar-label { grid-area: label; }
+.inf-bar-row:first-child .inf-bar-pct   { grid-area: pct; }
+.inf-bar-row:first-child .inf-bar-track { grid-area: track; }
+
+/* Other rows — labels left, bar in middle, pct right */
+.inf-bar-label {
+  font-family: var(--inf-font-display);
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--inf-text-dim);
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  letter-spacing: -0.01em;
+  order: 1;
+}
+
+.inf-bar-label.top-1 { /* handled by :first-child above */ }
+
+.inf-bar-track {
+  height: 5px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 99px;
+  overflow: hidden;
+  order: 2;
+}
+
+.inf-bar-fill {
+  height: 100%;
+  border-radius: 99px;
+  width: 0%;
+  background: rgba(255,255,255,0.20);
+  transition: width 0.9s var(--inf-ease);
+}
+
+.inf-bar-fill.top-1 { /* handled by :first-child above */ }
+
+.inf-bar-pct {
+  font-family: var(--inf-font-mono);
+  font-size: 11px;
+  color: rgba(232,232,240,0.35);
+  text-align: right;
+  order: 3;
+}
+
+.inf-bar-pct.top-1 { /* handled by :first-child above */ }
+
+/* Try again button */
+.inf-try-again {
+  font-family: var(--inf-font-display);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: var(--inf-text-dim);
+  background: var(--inf-glass);
+  backdrop-filter: var(--inf-glass-blur);
+  -webkit-backdrop-filter: var(--inf-glass-blur);
+  border: 1px solid var(--inf-border);
+  border-radius: 99px;
+  padding: 11px 32px;
+  cursor: pointer;
+  margin-top: 24px;
+  transition: border-color 0.3s, color 0.3s, background 0.3s,
+              transform 0.3s var(--inf-ease-spring);
+  outline: none;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: fit-content;
+  max-width: none;
+}
+
+.inf-try-again:hover {
+  border-color: var(--inf-border-hi);
+  color: var(--inf-text);
+  background: rgba(255,255,255,0.10);
+  transform: translateY(-2px);
+}
+
+/* ── Responsive ──────────────────────────────────────── */
+
+@media (max-width: 600px) {
+  .inf-stage {
+    padding-bottom: 98px;
+  }
+
+  /* Results screen: tighter padding on mobile */
+  .inf-results-screen {
+    padding: 28px 16px 40px;
+  }
+
+  .inf-results-screen > * {
+    max-width: 100%;
+  }
+
+  /* Winner card */
+  .inf-bar-row:first-child {
+    padding: 14px 16px;
+    border-radius: 16px;
+  }
+
+  .inf-bar-row:first-child .inf-bar-label {
+    font-size: clamp(16px, 5vw, 22px);
+  }
+
+  .inf-bar-row:first-child .inf-bar-pct {
+    font-size: 30px;
+  }
+
+  /* Other rows */
+  .inf-bar-row {
+    grid-template-columns: 1fr 100px 36px;
+    gap: 8px;
+    padding: 8px 10px;
+  }
+
+  .inf-bar-label {
+    font-size: 11px;
+  }
+
+  .inf-controls {
+    gap: 10px;
+    padding: 12px 16px;
+  }
+
+  .inf-speed-slider {
+    width: 70px;
+  }
+}

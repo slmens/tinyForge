@@ -1,0 +1,23 @@
+# Local tools / IDE
+.claude/
+.cursor/
+.idea/
+.vscode/
+*.swp
+*~
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Native build artifacts
+*.o
+tinyforge
+main.o
+parser/*.o
+assets/onnx.pb.o
+
+# Temp / logs
+*.log
+*.tmp
