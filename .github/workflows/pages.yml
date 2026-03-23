@@ -29,6 +29,22 @@ jobs:
           mkdir -p _site
           cp -r web _site/web
           cp -r assets _site/assets
+          # Root URL has no index otherwise → 404; app lives under /web/
+          cat > _site/index.html << 'EOF'
+          <!DOCTYPE html>
+          <html lang="en">
+          <head>
+            <meta charset="utf-8">
+            <meta http-equiv="refresh" content="0; url=web/">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <title>TinyForge</title>
+            <link rel="canonical" href="web/">
+          </head>
+          <body>
+            <p><a href="web/">Open TinyForge</a></p>
+          </body>
+          </html>
+          EOF
 
       - uses: actions/configure-pages@v5
 

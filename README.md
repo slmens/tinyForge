@@ -62,7 +62,7 @@ git push -u origin main
 
 3. **Settings → Pages** → set source to **GitHub Actions** (this repo includes `.github/workflows/pages.yml`).  
 4. After the first push, confirm the workflow in the **Actions** tab.  
-5. Site URL: `https://USER.github.io/REPO/web/`
+5. Site URL: `https://USER.github.io/REPO/` (redirects to `web/`) or open `https://USER.github.io/REPO/web/` directly.
 
 ---
 
