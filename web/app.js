@@ -709,8 +709,11 @@ function setupBlog() {
   blogState.phase = state.screen;
   loadBlogForPhase(state.screen);
 
-  // Ensure panel starts open on load
-  openBlog();
+  if (window.innerWidth <= 600) {
+    closeBlog();
+  } else {
+    openBlog();
+  }
 }
 
 // ── Stats bar ─────────────────────────────────────────

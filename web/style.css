@@ -161,6 +161,7 @@ body {
   align-items: center;
   padding: 0 24px;
   gap: 14px;
+  overflow: hidden;
   background: var(--glass);
   backdrop-filter: var(--glass-blur);
   -webkit-backdrop-filter: var(--glass-blur);
@@ -198,7 +199,6 @@ body {
   font-size: 11px;
   letter-spacing: 0.05em;
   color: var(--text-3);
-  margin-left: auto;
 }
 
 /* ── Theme toggle — animated pill switch ─────────────── */
@@ -272,6 +272,7 @@ body {
   display: flex;
   align-items: center;
   gap: 2px;
+  margin-left: auto;
   background: var(--surface-2);
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
@@ -1289,6 +1290,26 @@ html[data-theme="dark"] .graph-area::before {
 }
 
 @media (max-width: 600px) {
+  .nav { padding: 0 12px; gap: 8px; }
+  .nav-model { display: none; }
+  .nav-name { font-size: 13px; }
+  .phase-btn { padding: 5px 8px; gap: 4px; }
+  .phase-label { font-size: 11px; }
+
   .blog-panel { width: 100vw; }
-  .blog-trigger { top: calc(var(--nav-h) + 8px); right: 8px; }
+  .blog-trigger {
+    top: auto;
+    bottom: 16px;
+    right: 16px;
+    transform: none;
+    writing-mode: horizontal-tb;
+    padding: 10px 16px;
+    border: 1px solid var(--accent);
+    border-radius: var(--radius-sm);
+    font-size: 11px;
+    z-index: 160;
+  }
+  .blog-trigger:hover {
+    transform: translateY(-2px);
+  }
 }
