@@ -1038,11 +1038,11 @@ body {
 /* ── Blog panel (right sidebar) ──────────────────────── */
 .blog-panel {
   position: fixed;
-  top: 0;
+  top: var(--nav-h);
   right: 0;
   bottom: 0;
   width: min(420px, 90vw);
-  z-index: 200;
+  z-index: 150;
   background: var(--glass);
   backdrop-filter: var(--glass-blur);
   -webkit-backdrop-filter: var(--glass-blur);

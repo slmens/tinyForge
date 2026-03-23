@@ -358,11 +358,15 @@ The parser gave us a map. Now we run it.
 
 Upload an image, hit Run, and the model will walk through all 100 operations one by one, slow enough that you can actually see what's happening at each step. No black box. The real math, live, in front of you.
 
+**One thing to keep in mind:** each layer produces thousands (sometimes hundreds of thousands) of numbers. We can't fit all of them on screen, so the visualization shows a small sample of the actual data at each step. You'll see a note like "showing 196 of 25,088 values" in the corner, that's telling you how much of the real tensor you're looking at. The math underneath is running on all of it; we're just showing you a window into it.
+
 Let's trace exactly what happens from the moment you hit Run to the moment you get an answer.
 
 ## Step 0: Preprocessing
 
 Before the model touches your image, we need to prepare it. Models are picky. MobileNetV2 was trained on images that were exactly **224×224 pixels**, so no matter what size your photo is, we resize it to that exact square first.
+
+One thing you'll notice: since the model only sees a 224×224 square, your image gets cropped and squeezed into that tiny frame. You won't see the full picture during inference, just the resized version. That's normal. The model was trained this way and it's all it needs.
 
 But resizing isn't enough. We also need to **normalize** the pixel values, and this part is worth understanding because it trips people up.
 

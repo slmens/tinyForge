@@ -59,10 +59,10 @@ function clearCanvas(ctx, w, h) {
 // Draw a sampling note in the bottom-right corner
 function drawSamplingNote(ctx, W, H, text) {
   ctx.save();
-  ctx.font = `300 9px 'JetBrains Mono', monospace`;
+  ctx.font = `400 10px 'JetBrains Mono', monospace`;
   ctx.textAlign = 'right';
   ctx.textBaseline = 'bottom';
-  ctx.fillStyle = 'rgba(232,232,240,0.15)';
+  ctx.fillStyle = 'rgba(232,232,240,0.45)';
   ctx.fillText(text, W - 12, H - 8);
   ctx.restore();
 }
